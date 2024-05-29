@@ -15,7 +15,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
-    && apt-get install -y git python3 gcc g++
+    && apt-get install -y git python3 gcc g++ make
 
 RUN mkdir -p /opt/app
 WORKDIR /opt/app
