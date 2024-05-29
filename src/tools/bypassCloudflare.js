@@ -8,7 +8,9 @@ async function getPage(url) {
 
 (async () => {
 	const { connect } = await import("puppeteer-real-browser");
-	const { page, browser } = await connect({});
+	const { page, browser } = await connect({
+		turnstile: true,
+	});
 	await page.goto("https://apibeta.deeeep.io", {
 		waitUntil: "domcontentloaded",
 	});
