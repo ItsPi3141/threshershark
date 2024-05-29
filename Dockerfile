@@ -1,4 +1,5 @@
 FROM node:22.2.0-alpine3.19
+RUN apk add git
 RUN apk add xvfb
 RUN apk add chromium
 
