@@ -4,5 +4,6 @@
 		"true": "<:true:1244463752305180715>",
 		"false": "<:false:1244463810891218985>",
 		"verified": "<:verified:1243769800904146984>"
-	}
+	},
+	"bypassCloudflare": false
 }
