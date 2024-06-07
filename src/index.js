@@ -7,6 +7,8 @@ const client = new Client({
 	partials: [],
 });
 
+require("./server.js");
+
 // Load slash commands
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, "commands");

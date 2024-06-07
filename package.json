@@ -12,6 +12,7 @@
 	"license": "GPL-3.0",
 	"dependencies": {
 		"discord.js": "^14.15.2",
+		"express": "^4.19.2",
 		"is-apng": "^1.0.1",
 		"mongoose": "^8.4.0",
 		"node-font2base64": "^0.9.2",
