@@ -32,8 +32,10 @@ const tierXpReq = {
 };
 
 const resources = {
-	quicksandFont400: font2base64.encodeToDataUrlSync(path.join(__dirname, "Quicksand400.ttf")),
-	quicksandFont500: font2base64.encodeToDataUrlSync(path.join(__dirname, "Quicksand500.ttf")),
+	// quicksandFont400: font2base64.encodeToDataUrlSync(path.join(__dirname, "Quicksand400.ttf")),
+	// quicksandFont500: font2base64.encodeToDataUrlSync(path.join(__dirname, "Quicksand500.ttf")),
+	quicksandFont400: fs.readFileSync(path.join(__dirname, "Quicksand400.ttf.b64")),
+	quicksandFont500: fs.readFileSync(path.join(__dirname, "Quicksand500.ttf.b64")),
 };
 
 function b64Background(name) {
@@ -159,6 +161,7 @@ async function createSkinCard(skinData) {
 		type: "png",
 		puppeteerArgs: {
 			headless: true,
+			args: ["--no-sandbox"],
 		},
 		content: {
 			quicksandFont400: resources.quicksandFont400,
