@@ -58,6 +58,7 @@ async function createProfileCard(profileData, statsData, theme) {
 		type: "png",
 		puppeteerArgs: {
 			headless: true,
+			args: ["--no-sandbox"],
 		},
 		content: {
 			quicksandFont400: resources.quicksandFont400,
