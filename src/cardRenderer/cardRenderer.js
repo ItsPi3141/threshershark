@@ -60,7 +60,7 @@ async function createProfileCard(profileData, statsData, theme) {
 		type: "png",
 		puppeteerArgs: {
 			headless: true,
-			args: ["--no-sandbox"],
+			args: ["--no-sandbox", "--disable-web-security"],
 		},
 		content: {
 			quicksandFont400: resources.quicksandFont400,
@@ -161,7 +161,7 @@ async function createSkinCard(skinData) {
 		type: "png",
 		puppeteerArgs: {
 			headless: true,
-			args: ["--no-sandbox"],
+			args: ["--no-sandbox", "--disable-web-security"],
 		},
 		content: {
 			quicksandFont400: resources.quicksandFont400,
