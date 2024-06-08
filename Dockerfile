@@ -17,6 +17,10 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 RUN apt-get update \
     && apt-get install -y git python3 gcc g++ make
 
+RUN apt-get update \
+    && apt-get install -y fonts-quicksand \
+    && fc-cache -fv
+
 RUN mkdir -p /opt/app
 WORKDIR /opt/app
 COPY ./ /opt/app
