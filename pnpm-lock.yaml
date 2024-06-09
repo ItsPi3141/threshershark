@@ -28,7 +28,7 @@ importers:
         version: 4.0.0
       puppeteer-real-browser:
         specifier: ^1.2.17
-        version: 1.2.17(puppeteer-core@21.11.0)
+        version: 1.2.18(puppeteer-core@21.11.0)
       sharp-apng:
         specifier: ^0.1.5
         version: 0.1.5
@@ -1065,8 +1065,8 @@ packages:
       puppeteer-core:
         optional: true
 
-  puppeteer-real-browser@1.2.17:
-    resolution: {integrity: sha512-rY2yr6reMMoZFhT30h4ZDVWU63aOr3ek1foNVXD+m3hnYLvvLRkeqtRRTYxyUOEChs+64rK5NqZGrA4uc98MDA==}
+  puppeteer-real-browser@1.2.18:
+    resolution: {integrity: sha512-XeIGoPeGFP/UG8GzqZo+syalWwWY44Rwi6+ZGBlbcW3VfX6jeV3tIfrgF8e1Ag/JlwfdA8R6+0ZYwr8i2zlbbg==}
 
   puppeteer@21.0.1:
     resolution: {integrity: sha512-KTjmSdPZ6bMkq3EbAzAUhcB3gMDXvdwd6912rxG9hNtjwRJzHSA568vh6vIbO2WQeNmozRdt1LtiUMLSWfeMrg==}
@@ -2504,7 +2504,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  puppeteer-real-browser@1.2.17(puppeteer-core@21.11.0):
+  puppeteer-real-browser@1.2.18(puppeteer-core@21.11.0):
     dependencies:
       '@sparticuz/chromium': 119.0.2
       axios: 1.7.2

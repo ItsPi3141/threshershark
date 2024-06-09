@@ -2,9 +2,10 @@
 	"name": "threshershark",
 	"version": "1.0.0",
 	"description": "",
-	"main": "src/index.js",
+	"main": "keepalive.js",
 	"scripts": {
-		"prod": "node src/index.js",
+		"prod": "node keepalive.js",
+		"prodtest": "node --env-file=.env keepalive.js",
 		"start": "node --env-file=.env src/index.js"
 	},
 	"keywords": [],
