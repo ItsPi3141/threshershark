@@ -184,7 +184,7 @@ async function createSkinCard(skinData) {
 							.map((attr) => {
 								const [key, value] = attr.split("=");
 								if (skinAttributes[key]) {
-									return `<span>${skinAttributes[key].title}: ${value}${skinAttributes[key].symbol}</span>`;
+									return `<span>${skinAttributes[key].title}: ${value}</span>`;
 								}
 								return "";
 							})
