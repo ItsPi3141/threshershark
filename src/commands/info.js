@@ -9,7 +9,7 @@ module.exports = {
 			new ButtonBuilder()
 				.setLabel("Invite to your server!")
 				.setStyle(ButtonStyle.Link)
-				.setURL(`https://discord.com/api/oauth2/authorize?client_id=${config.clientId}&permissions=0&scope=applications.commands+bot`)
+				.setURL(`https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID || 0}&permissions=0&scope=applications.commands+bot`)
 		);
 		await interaction.reply({
 			embeds: [
