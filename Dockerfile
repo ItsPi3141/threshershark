@@ -8,14 +8,17 @@ RUN apt-get update && apt-get install -y \
     xvfb \
     git python3 gcc g++ make \
     fonts-quicksand \
-    && rm -rf /var/lib/apt/lists/* \
-    && fc-cache -fv
+    && rm -rf /var/lib/apt/lists/*
 
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
     && apt-get update \
     && apt-get install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update \
+    && apt-get install -y fonts-quicksand \
+    && fc-cache -fv
 
 RUN mkdir -p /opt/app
 WORKDIR /opt/app
