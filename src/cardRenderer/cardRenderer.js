@@ -32,8 +32,6 @@ const tierXpReq = {
 };
 
 const resources = {
-	// quicksandFont400: font2base64.encodeToDataUrlSync(path.join(__dirname, "Quicksand400.ttf")),
-	// quicksandFont500: font2base64.encodeToDataUrlSync(path.join(__dirname, "Quicksand500.ttf")),
 	quicksandFont400: fs
 		.readFileSync(path.join(__dirname, "quicksand400.ttf.b64"))
 		.toString(),
@@ -70,6 +68,7 @@ async function createProfileCard(profileData, statsData, theme) {
 	const content = {
 		quicksandFont400: resources.quicksandFont400,
 		quicksandFont500: resources.quicksandFont500,
+
 		background: hasBgImage
 			? `<image href="${backgrounds[theme]}" x="0" y="0" width="900" height="300" clip-path="url(#bgClip)"
     preserveAspectRatio="xMidYMid slice" />`
