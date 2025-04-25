@@ -70,7 +70,10 @@ async function createProfileCard(profileData, statsData, theme) {
 	const content = {
 		quicksandFont400: resources.quicksandFont400,
 		quicksandFont500: resources.quicksandFont500,
-		background: hasBgImage ? `url(${backgrounds[theme]})` : "#19212c",
+		background: hasBgImage
+			? `<image href="${backgrounds[theme]}" x="0" y="0" width="900" height="300" clip-path="url(#bgClip)"
+    preserveAspectRatio="xMidYMid slice" />`
+			: `<rect x="0" y="0" width="900" height="300" rx="32" fill="#19212c" />`,
 		surfaceColor: hasBgImage ? "#0006" : "#1f2937",
 		surfaceAltColor: hasBgImage ? "#0003" : "#19212c",
 
