@@ -3,7 +3,9 @@ const { apng2gif } = require("./tools/apng2gif");
 const config = require("../config.json");
 
 function numberWithCommas(x) {
-	return typeof x === "number" ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "N/A";
+	return typeof x === "number"
+		? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+		: "N/A";
 }
 
 async function userProfileEmbed(profileData, statsData) {
@@ -11,7 +13,9 @@ async function userProfileEmbed(profileData, statsData) {
 	let gifData = null;
 	let isApng = false;
 	if (hasPfp) {
-		const a2g = await apng2gif(`https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`);
+		const a2g = await apng2gif(
+			`https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`,
+		);
 		if (a2g === null) {
 			isApng = false;
 		} else {
@@ -25,7 +29,7 @@ async function userProfileEmbed(profileData, statsData) {
 		attachments.push(
 			new AttachmentBuilder(gifData, {
 				name: "pfp.gif",
-			})
+			}),
 		);
 	}
 
@@ -33,7 +37,9 @@ async function userProfileEmbed(profileData, statsData) {
 		embeds: [
 			new EmbedBuilder()
 				.setURL(`https://beta.deeeep.io/u/${profileData.username}`)
-				.setTitle(`${profileData.username} ${profileData.verified ? config.emojis.verified : ""}`)
+				.setTitle(
+					`${profileData.username} ${profileData.verified ? config.emojis.verified : ""}`,
+				)
 				.setDescription(profileData.about?.toString() || "*No description*")
 				.addFields(
 					{
@@ -49,7 +55,10 @@ async function userProfileEmbed(profileData, statsData) {
 					{
 						name: "KDR",
 						value: `${
-							(profileData.play_count === 0 ? profileData.kill_count : profileData.kill_count / profileData.play_count).toFixed(2) || "*N/A*"
+							(profileData.play_count === 0
+								? profileData.kill_count
+								: profileData.kill_count / profileData.play_count
+							).toFixed(2) || "*N/A*"
 						}`,
 						inline: true,
 					},
@@ -65,7 +74,7 @@ async function userProfileEmbed(profileData, statsData) {
 								? "*No data*"
 								: `${numberWithCommas(statsData.pd.played)} played, ${numberWithCommas(statsData.pd.won)} won; win ratio: ${
 										statsData.pd.ratio
-								  }%`,
+									}%`,
 						inline: false,
 					},
 					{
@@ -97,7 +106,7 @@ async function userProfileEmbed(profileData, statsData) {
 						name: "Death message",
 						value: profileData.description?.toString() || "*No death message*",
 						inline: false,
-					}
+					},
 				)
 				.setFooter({
 					text: `ID: ${profileData.id}`,
@@ -107,7 +116,7 @@ async function userProfileEmbed(profileData, statsData) {
 						? isApng
 							? "attachment://pfp.gif"
 							: `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
-						: "https://beta.deeeep.io/img/avatar.png"
+						: "https://beta.deeeep.io/img/avatar.png",
 				)
 				.setTimestamp(),
 		],

@@ -1,5 +1,10 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require("discord.js");
-const bypassCloudflare = require("../tools/bypassCloudflare.js");
+const {
+	SlashCommandBuilder,
+	ActionRowBuilder,
+	ButtonStyle,
+	ButtonBuilder,
+} = require("discord.js");
+const { getPage } = require("../tools/fetch.js");
 const { numberWithCommas } = require("../utils.js");
 const { EmbedBuilder } = require("discord.js");
 
@@ -8,31 +13,42 @@ module.exports = {
 		.setName("map")
 		.setDescription("Get info about a Deeeep.io map")
 		.addStringOption((option) =>
-			option.setName("mode").setDescription("Search by string ID or numerical ID").setRequired(true).setChoices(
-				{
-					name: "Numerical ID",
-					value: "nid",
-				},
-				{
-					name: "String ID",
-					value: "sid",
-				}
-			)
+			option
+				.setName("mode")
+				.setDescription("Search by string ID or numerical ID")
+				.setRequired(true)
+				.setChoices(
+					{
+						name: "Numerical ID",
+						value: "nid",
+					},
+					{
+						name: "String ID",
+						value: "sid",
+					},
+				),
 		)
-		.addStringOption((option) => option.setName("map").setDescription("The map to display").setRequired(true)),
+		.addStringOption((option) =>
+			option
+				.setName("map")
+				.setDescription("The map to display")
+				.setRequired(true),
+		),
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
 
 		const mapUrl =
 			interaction.options.getString("mode") === "sid"
-				? `https://apibeta.deeeep.io/maps/s/${interaction.options.getString("map")}`
-				: `https://apibeta.deeeep.io/maps/${interaction.options.getString("map")}`;
-		const mapData = await bypassCloudflare.getPage(mapUrl);
+				? `https://api.deeeep.io/maps/s/${interaction.options.getString("map")}`
+				: `https://api.deeeep.io/maps/${interaction.options.getString("map")}`;
+		const mapData = await getPage(mapUrl);
 		if (mapData === null) {
 			throw new Error("Cloudflare error!");
 		}
 		if (!mapData.id) {
-			return await interaction.reply("⚠️ Map not found! Make sure you have inputted a valid ID.");
+			return await interaction.reply(
+				"⚠️ Map not found! Make sure you have inputted a valid ID.",
+			);
 		}
 
 		const countedObjects = [
@@ -64,8 +80,8 @@ module.exports = {
 							object.layerId === "food-spawns"
 								? object.settings.count
 								: object.layerId === "hide-spaces" || object.layerId === "props"
-								? 1
-								: object.points.length,
+									? 1
+									: object.points.length,
 					};
 				} else {
 					objectCount[object.layerId].count++;
@@ -73,12 +89,15 @@ module.exports = {
 						object.layerId === "food-spawns"
 							? object.settings.count
 							: object.layerId === "hide-spaces" || object.layerId === "props"
-							? 1
-							: object.points.length;
+								? 1
+								: object.points.length;
 				}
 				if (object.layerId !== "food-spawns") {
 					totalCount.count++;
-					totalCount.points += object.layerId === "hide-spaces" || object.layerId === "props" ? 1 : object.points.length;
+					totalCount.points +=
+						object.layerId === "hide-spaces" || object.layerId === "props"
+							? 1
+							: object.points.length;
 				}
 			}
 		}
@@ -89,8 +108,16 @@ module.exports = {
 					.match(/(.)(.*)/)
 					.slice(1)
 					.map((e, i) => (i === 0 ? e.toUpperCase() : e))
-					.join("")}**: ${value.count} ${value.count === 1 ? "object" : "objects"} (${value.subcount} ${
-					layer === "food-spawns" ? (value.subcount === 1 ? "pellet" : "pellets") : value.subcount === 1 ? "point" : "points"
+					.join(
+						"",
+					)}**: ${value.count} ${value.count === 1 ? "object" : "objects"} (${value.subcount} ${
+					layer === "food-spawns"
+						? value.subcount === 1
+							? "pellet"
+							: "pellets"
+						: value.subcount === 1
+							? "point"
+							: "points"
 				})`;
 			})
 			.join("\n");
@@ -118,7 +145,7 @@ module.exports = {
 						{
 							name: "Dimensions",
 							value: `${numberWithCommas(Number.parseFloat(mapObjectData.worldSize.width))} x ${numberWithCommas(
-								Number.parseFloat(mapObjectData.worldSize.height)
+								Number.parseFloat(mapObjectData.worldSize.height),
 							)}`,
 							inline: true,
 						},
@@ -146,9 +173,11 @@ module.exports = {
 						},
 						{
 							name: "Tags",
-							value: mapData.tags.map((t) => `\`${t.id}\``).join(", ") || "*No tags*",
+							value:
+								mapData.tags.map((t) => `\`${t.id}\``).join(", ") ||
+								"*No tags*",
 							inline: false,
-						}
+						},
 					)
 					.setFooter({
 						text: `String ID: ${mapData.string_id} • Numerical ID: ${mapData.id}`,

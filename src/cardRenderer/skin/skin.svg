@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="{{cardHeight}}">
+  <defs>
+    <style>
+      @font-face {
+        font-family: "QuicksandTTF";
+        src: url(../Quicksand400.ttf) format('truetype');
+        font-weight: 400;
+      }
+
+      @font-face {
+        font-family: "QuicksandTTF";
+        src: url(../Quicksand500.ttf) format('truetype');
+        font-weight: 700;
+      }
+
+      @font-face {
+        font-family: "QuicksandB64";
+        src: url({{quicksandFont400}}) format('truetype');
+        font-weight: 400;
+      }
+
+      @font-face {
+        font-family: "QuicksandB64";
+        src: url({{quicksandFont500}}) format('truetype');
+        font-weight: 700;
+      }
+
+      * {
+        font-family: "Quicksand", "QuicksandB64", "QuicksandTTF", "Arial", sans-serif;
+      }
+
+      .text {
+        font-size: 36px;
+        fill: #fff;
+      }
+
+      .stat {
+        font-size: 28px;
+        fill: #fff;
+      }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="{{cardHeight}}" rx="24" fill="url(#bgGradient)" />
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#266AC1" />
+      <stop offset="100%" stop-color="#4D8DDE" />
+    </linearGradient>
+  </defs>
+
+  <!-- Top section with image and name -->
+  <image href="{{animalImage}}" x="30" y="30" width="72" height="96" preserveAspectRatio="xMidYMid meet" />
+  <text x="120" y="78" font-size="48" fill="#fff" font-weight="bold">{{name}}</text>
+  <text x="120" y="118" font-size="36" fill="#fff">{{animal}}</text>
+  <line x1="30" y1="140" x2="770" y2="140" stroke="#fff" stroke-width="1" />
+
+  <!-- Middle image (skin) -->
+  <image href="{{skin}}" x="275" y="220" width="250" height="375" preserveAspectRatio="xMidYMid meet" />
+
+  <!-- Bottom surface box -->
+  <rect x="30" y="600" width="740" height="{{infoBoxHeight}}" rx="24" fill="rgba(255,255,255,0.2)" />
+  <text x="50" y="640" class="text">{{price}}</text>
+  <text x="50" y="680" class="text">Created by</text>
+  <text x="245" y="680" class="text" fill="#dbeafe">@{{user}}</text>
+
+  <!-- Stat section -->
+  <text x="50" y="760" class="text" display="{{showStats}}">
+    <tspan font-weight="bold">Stat changes</tspan>
+  </text>
+  <text x="50" y="796" display="{{showHabChangeNotice}}" font-size="28" fill="#fff">Habitat changes are not
+    shown</text>
+
+  <!-- Stat changes -->
+  {{stats}}
+</svg>

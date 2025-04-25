@@ -1,9 +1,9 @@
-const nodeHtmlToImage = require("node-html-to-image");
-const font2base64 = require("node-font2base64");
 const fs = require("node:fs");
 const path = require("node:path");
 const { numberWithCommas } = require("../utils");
 const animals = require("../../animals.json");
+const { getImageB64 } = require("../tools/fetch");
+const sharp = require("sharp");
 
 const tierColors = {
 	1: "#fdbe62",
@@ -34,9 +34,17 @@ const tierXpReq = {
 const resources = {
 	// quicksandFont400: font2base64.encodeToDataUrlSync(path.join(__dirname, "Quicksand400.ttf")),
 	// quicksandFont500: font2base64.encodeToDataUrlSync(path.join(__dirname, "Quicksand500.ttf")),
-	quicksandFont400: fs.readFileSync(path.join(__dirname, "quicksand400.ttf.b64")).toString(),
-	quicksandFont500: fs.readFileSync(path.join(__dirname, "quicksand500.ttf.b64")).toString(),
+	quicksandFont400: fs
+		.readFileSync(path.join(__dirname, "quicksand400.ttf.b64"))
+		.toString(),
+	quicksandFont500: fs
+		.readFileSync(path.join(__dirname, "quicksand500.ttf.b64"))
+		.toString(),
 };
+
+async function svgToPng(svg) {
+	return await sharp(Buffer.from(svg)).png().toBuffer();
+}
 
 function b64Background(name) {
 	const image = fs.readFileSync(path.join(__dirname, "backgrounds", name));
@@ -54,46 +62,59 @@ const backgrounds = {
 async function createProfileCard(profileData, statsData, theme) {
 	const hasPd = statsData.pd !== null;
 	const hasBgImage = typeof backgrounds[theme] === "string";
-	const image = await nodeHtmlToImage({
-		html: fs.readFileSync(path.join(__dirname, "profile", "profile.html"), "utf8"),
-		transparent: true,
-		type: "png",
-		puppeteerArgs: {
-			headless: true,
-			args: ["--no-sandbox", "--disable-web-security"],
-		},
-		content: {
-			quicksandFont400: resources.quicksandFont400,
-			quicksandFont500: resources.quicksandFont500,
-			background: hasBgImage ? `url(${backgrounds[theme]})` : "#19212c",
-			surfaceColor: hasBgImage ? "#0006" : "#1f2937",
-			surfaceAltColor: hasBgImage ? "#0003" : "#19212c",
 
-			profilePicture:
-				profileData.picture !== null ? `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}` : "https://beta.deeeep.io/img/avatar.png",
-			userId: profileData.id,
-			profileViews: numberWithCommas(profileData.profile_views),
-			username: profileData.username,
-			killCount: numberWithCommas(profileData.kill_count),
-			killRank: numberWithCommas(statsData.rank_kc),
-			highscore: numberWithCommas(profileData.highest_score),
-			highscoreRank: numberWithCommas(statsData.rank_hs),
-			playCount: numberWithCommas(profileData.play_count),
-			playRank: numberWithCommas(statsData.rank_pc),
-			kdRatio: (profileData.play_count === 0 ? profileData.kill_count : profileData.kill_count / profileData.play_count).toFixed(2),
-			pdWonPlayed: hasPd ? `${numberWithCommas(statsData.pd.won)}/${numberWithCommas(statsData.pd.played)} won` : "No data",
-			pdPercent: hasPd ? `(${statsData.pd.ratio}%)` : "",
-			xp: numberWithCommas(profileData.xp),
-			xpColor: tierColors[profileData.tier],
-			xpPercent: `${
-				profileData.tier === 10
-					? 100
-					: Math.round(((profileData.xp - tierXpReq[profileData.tier]) / (tierXpReq[profileData.tier + 1] - tierXpReq[profileData.tier])) * 100)
-			}%`,
-			tier: profileData.tier || 1,
-		},
-	});
-	return image;
+	let svg = fs.readFileSync(
+		path.join(__dirname, "profile", "profile.svg"),
+		"utf8",
+	);
+	const content = {
+		quicksandFont400: resources.quicksandFont400,
+		quicksandFont500: resources.quicksandFont500,
+		background: hasBgImage ? `url(${backgrounds[theme]})` : "#19212c",
+		surfaceColor: hasBgImage ? "#0006" : "#1f2937",
+		surfaceAltColor: hasBgImage ? "#0003" : "#19212c",
+
+		profilePicture: await getImageB64(
+			profileData.picture !== null
+				? `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
+				: "https://deeeep.io/img/avatar.png",
+		),
+		userId: profileData.id,
+		profileViews: numberWithCommas(profileData.profile_views),
+		username: profileData.username,
+		killCount: numberWithCommas(profileData.kill_count),
+		killRank: numberWithCommas(statsData.rank_kc),
+		highscore: numberWithCommas(profileData.highest_score),
+		highscoreRank: numberWithCommas(statsData.rank_hs),
+		playCount: numberWithCommas(profileData.play_count),
+		playRank: numberWithCommas(statsData.rank_pc),
+		kdRatio: (profileData.play_count === 0
+			? profileData.kill_count
+			: profileData.kill_count / profileData.play_count
+		).toFixed(2),
+		pdWonPlayed: hasPd
+			? `${numberWithCommas(statsData.pd.won)}/${numberWithCommas(statsData.pd.played)} won`
+			: "No data",
+		pdPercent: hasPd ? `(${statsData.pd.ratio}%)` : "",
+		xp: numberWithCommas(profileData.xp),
+		xpColor: tierColors[profileData.tier],
+		xpPercent:
+			(profileData.tier === 10
+				? 1
+				: Math.min(
+						Math.round(
+							(profileData.xp - tierXpReq[profileData.tier]) /
+								(tierXpReq[profileData.tier + 1] - tierXpReq[profileData.tier]),
+						),
+						1,
+					)) * 420,
+		tier: profileData.tier || 1,
+	};
+	for (const key in content) {
+		svg = svg.replaceAll(`{{${key}}}`, content[key]);
+	}
+
+	return await svgToPng(svg);
 }
 
 const skinAttributes = {
@@ -155,45 +176,75 @@ const skinAttributes = {
 };
 
 async function createSkinCard(skinData) {
-	const image = await nodeHtmlToImage({
-		html: fs.readFileSync(path.join(__dirname, "skin", "skin.html"), "utf8"),
-		transparent: true,
-		type: "png",
-		puppeteerArgs: {
-			headless: true,
-			args: ["--no-sandbox", "--disable-web-security"],
-		},
-		content: {
-			quicksandFont400: resources.quicksandFont400,
-			quicksandFont500: resources.quicksandFont500,
+	let svg = fs.readFileSync(path.join(__dirname, "skin", "skin.svg"), "utf8");
+	const content = {
+		quicksandFont400: resources.quicksandFont400,
+		quicksandFont500: resources.quicksandFont500,
 
-			name: skinData.name,
-			animal: animals[skinData.fish_level] || "Unknown",
-			animalImage: `https://beta.deeeep.io/assets/characters/${animals[skinData.fish_level]}.png`,
-			skin: `https://cdn.deeeep.io/custom/skins/${skinData.asset}?v=${skinData.version}`,
-			user: skinData.user.username,
-			description: skinData.description || "*No description*",
-			price: `${numberWithCommas(skinData.price)} ${skinData.price === 1 ? "coin" : "coins"}`,
-			showStats: skinData.attributes === null ? "none" : "flex",
-			showHabChangeNotice: skinData.attributes?.includes("HA=") ? "flex" : "none",
-			stats:
-				skinData.attributes === null
-					? ""
-					: skinData.attributes
-							.split(";")
-							.map((attr) => {
-								const [key, value] = attr.split("=");
-								if (skinAttributes[key]) {
-									return `<span>${skinAttributes[key].title}: ${
-										value.endsWith(skinAttributes[key].symbol) ? value : `${value}${skinAttributes[key].symbol}`
-									}</span>`;
-								}
-								return "";
-							})
-							.join(""),
-		},
-	});
-	return image;
+		name: skinData.name,
+		animal: animals[skinData.fish_level] || "Unknown",
+		animalImage: await getImageB64(
+			`https://deeeep.io/assets/characters/${animals[skinData.fish_level]}.png`,
+		),
+		skin: await getImageB64(
+			`https://cdn.deeeep.io/custom/skins/${skinData.asset}?v=${skinData.version}`,
+		),
+		user: skinData.user.username,
+		price: `${numberWithCommas(skinData.price)} ${skinData.price === 1 ? "coin" : "coins"}`,
+		showStats: skinData.attributes === null ? "none" : "flex",
+		showHabChangeNotice: skinData.attributes?.includes("HA=") ? "flex" : "none",
+		stats:
+			skinData.attributes === null
+				? ""
+				: skinData.attributes
+						.split(";")
+						.filter((attr) => {
+							const [key, value] = attr.split("=");
+							if (skinAttributes[key]) return true;
+							return false;
+						})
+						.map((attr, index) => {
+							const [key, value] = attr.split("=");
+							if (skinAttributes[key]) {
+								return `<text x="${index % 2 === 0 ? "50" : "425"}" y="${832 + Math.floor(index / 2) * 36}" class="stat">${skinAttributes[key].title}: ${
+									value.endsWith(skinAttributes[key].symbol)
+										? value
+										: `${value}${skinAttributes[key].symbol}`
+								}</text>`;
+							}
+							return "";
+						})
+						.join(""),
+		cardHeight:
+			skinData.attributes === null
+				? 726
+				: 852 +
+					Math.ceil(
+						skinData.attributes.split(";").filter((attr) => {
+							const [key, value] = attr.split("=");
+							if (skinAttributes[key]) return true;
+							return false;
+						}).length / 2,
+					) *
+						36,
+		infoBoxHeight:
+			skinData.attributes === null
+				? 96
+				: 222 +
+					Math.ceil(
+						skinData.attributes.split(";").filter((attr) => {
+							const [key, value] = attr.split("=");
+							if (skinAttributes[key]) return true;
+							return false;
+						}).length / 2,
+					) *
+						36,
+	};
+	for (const key in content) {
+		svg = svg.replaceAll(`{{${key}}}`, content[key]);
+	}
+
+	return await svgToPng(svg);
 }
 
 module.exports = {

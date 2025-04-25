@@ -1,6 +1,16 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const { REST, Routes, Client, Collection, GatewayIntentBits, Partials, ActivityType, Events, PresenceUpdateStatus } = require("discord.js");
+const {
+	REST,
+	Routes,
+	Client,
+	Collection,
+	GatewayIntentBits,
+	Partials,
+	ActivityType,
+	Events,
+	PresenceUpdateStatus,
+} = require("discord.js");
 
 const client = new Client({
 	intents: [],
@@ -12,7 +22,9 @@ require("./server.js");
 // Load slash commands
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, "commands");
-const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".js"));
+const commandFiles = fs
+	.readdirSync(commandsPath)
+	.filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
@@ -20,7 +32,9 @@ for (const file of commandFiles) {
 	if ("data" in command && "execute" in command) {
 		client.commands.set(command.data.name, command);
 	} else {
-		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		console.log(
+			`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+		);
 	}
 }
 
@@ -35,7 +49,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	if (interaction.isChatInputCommand()) {
 		const command = interaction.client.commands.get(interaction.commandName);
 		if (!command) {
-			console.error(`No command matching ${interaction.commandName} was found.`);
+			console.error(
+				`No command matching ${interaction.commandName} was found.`,
+			);
 			return;
 		}
 		try {
@@ -43,9 +59,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		} catch (error) {
 			console.error(error);
 			if (interaction.replied || interaction.deferred) {
-				await interaction.followUp({ content: "There was an error while executing this command!", ephemeral: true });
+				await interaction.followUp({
+					content: "There was an error while executing this command!",
+					ephemeral: true,
+				});
 			} else {
-				await interaction.reply({ content: "There was an error while executing this command!", ephemeral: true });
+				await interaction.reply({
+					content: "There was an error while executing this command!",
+					ephemeral: true,
+				});
 			}
 		}
 	}
@@ -56,7 +78,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	const commands = [];
 
 	const commandsPath = path.join(__dirname, "commands");
-	const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".js"));
+	const commandFiles = fs
+		.readdirSync(commandsPath)
+		.filter((file) => file.endsWith(".js"));
 
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
@@ -71,7 +95,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			};
 			commands.push(jsonCommand);
 		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+			console.log(
+				`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+			);
 		}
 	}
 
@@ -80,9 +106,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	// and deploy your commands!
 	(async () => {
 		try {
-			console.log(`Started refreshing ${commands.length} application (/) commands.`);
-			const data = await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
-			console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+			console.log(
+				`Started refreshing ${commands.length} application (/) commands.`,
+			);
+			const data = await rest.put(
+				Routes.applicationCommands(process.env.CLIENT_ID),
+				{ body: commands },
+			);
+			console.log(
+				`Successfully reloaded ${data.length} application (/) commands.`,
+			);
 		} catch (error) {
 			console.error(error);
 		}

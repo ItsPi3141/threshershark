@@ -1,5 +1,10 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require("discord.js");
-const bypassCloudflare = require("../tools/bypassCloudflare.js");
+const {
+	SlashCommandBuilder,
+	ActionRowBuilder,
+	ButtonStyle,
+	ButtonBuilder,
+} = require("discord.js");
+const { getPage } = require("../tools/fetch.js");
 const { numberWithCommas } = require("../utils.js");
 const { EmbedBuilder } = require("discord.js");
 const animals = require("../../animals.json");
@@ -9,27 +14,40 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("skin")
 		.setDescription("Get info about a Deeeep.io skin")
-		.addNumberOption((option) => option.setName("id").setDescription("ID of the skin").setRequired(true))
-		.addNumberOption((option) => option.setName("version").setDescription("Version of the skin").setRequired(false)),
+		.addNumberOption((option) =>
+			option.setName("id").setDescription("ID of the skin").setRequired(true),
+		)
+		.addNumberOption((option) =>
+			option
+				.setName("version")
+				.setDescription("Version of the skin")
+				.setRequired(false),
+		),
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
 
-		const skinUrl = `https://apibeta.deeeep.io/skins/${interaction.options.getNumber("id")}${
-			interaction.options.getNumber("version") ? `/${interaction.options.getNumber("version")}` : ""
+		const skinUrl = `https://api.deeeep.io/skins/${interaction.options.getNumber("id")}${
+			interaction.options.getNumber("version")
+				? `/${interaction.options.getNumber("version")}`
+				: ""
 		}`;
-		const skinData = await bypassCloudflare.getPage(skinUrl);
+		const skinData = await getPage(skinUrl);
 		if (skinData === null) {
 			throw new Error("Cloudflare error!");
 		}
 		if (!skinData.id) {
-			return await interaction.reply("⚠️ Skin not found! Make sure you have inputted a valid ID.");
+			return await interaction.reply(
+				"⚠️ Skin not found! Make sure you have inputted a valid ID.",
+			);
 		}
 
 		const asset = `https://cdn.deeeep.io/custom/skins/${skinData.asset}?v=${skinData.version}`;
 		const additionalAssets = [];
 		if (skinData.assets_data !== null) {
 			for (sprite of Object.values(skinData.assets_data)) {
-				additionalAssets.push(`https://cdn.deeeep.io/custom/skins/${sprite.asset}?v=${skinData.version}`);
+				additionalAssets.push(
+					`https://cdn.deeeep.io/custom/skins/${sprite.asset}?v=${skinData.version}`,
+				);
 			}
 		}
 		await interaction.reply({
@@ -38,9 +56,13 @@ module.exports = {
 					.setURL(`https://beta.deeeep.io/store/skins/${skinData.id}`)
 					.setAuthor({
 						name: skinData.user.username || "Unknown",
-						iconURL: skinData.user.picture ? `https://cdn.deeeep.io/uploads/avatars/${skinData.user.picture}` : undefined,
+						iconURL: skinData.user.picture
+							? `https://cdn.deeeep.io/uploads/avatars/${skinData.user.picture}`
+							: undefined,
 					})
-					.setTitle(`${skinData.name} \`v${numberWithCommas(skinData.version)}\``)
+					.setTitle(
+						`${skinData.name} \`v${numberWithCommas(skinData.version)}\``,
+					)
 					.setDescription(skinData.description || "*No description*")
 					.addFields(
 						{
@@ -91,14 +113,18 @@ module.exports = {
 								`Rejected: ${skinData.rejected ? config.emojis.true : config.emojis.false}`,
 							].join("\n"),
 							inline: false,
-						}
+						},
 					)
 					.setImage(asset)
 					.setFooter({
 						text: `ID: ${skinData.id}`,
 					})
 					.setTimestamp(),
-				...additionalAssets.map((asset) => new EmbedBuilder().setURL(`https://beta.deeeep.io/store/skins/${skinData.id}`).setImage(asset)),
+				...additionalAssets.map((asset) =>
+					new EmbedBuilder()
+						.setURL(`https://beta.deeeep.io/store/skins/${skinData.id}`)
+						.setImage(asset),
+				),
 			],
 		});
 	},
