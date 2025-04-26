@@ -2,7 +2,7 @@
   <defs>
     <style>
       text {
-        font-family: "Quicksand", sans-serif;
+        font-family: "Quicksand", "Arial", sans-serif;
       }
 
       .text {
