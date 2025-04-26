@@ -100,7 +100,7 @@ async function createProfileCard(profileData, statsData, theme) {
 		pdPercent: hasPd ? `(${statsData.pd.ratio}%)` : "",
 		xp: numberWithCommas(profileData.xp),
 		xpColor: tierColors[profileData.tier],
-		xpPercent:
+		xpPercent: Math.max(
 			(profileData.tier === 10
 				? 1
 				: Math.min(
@@ -110,6 +110,8 @@ async function createProfileCard(profileData, statsData, theme) {
 						),
 						1,
 					)) * 420,
+			30,
+		),
 		tier: profileData.tier || 1,
 	};
 	for (const key in content) {

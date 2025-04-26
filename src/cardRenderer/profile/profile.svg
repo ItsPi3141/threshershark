@@ -61,13 +61,13 @@
   <text x="565" y="175" font-size="18" fill="#fff" text-anchor="middle">(#{{playRank}})</text>
 
   <!-- XP Bar Background -->
-  <rect x="220" y="220" width="420" height="40" rx="20" fill="{{surfaceAltColor}}" />
+  <rect x="220" y="230" width="420" height="30" rx="15" fill="{{surfaceAltColor}}" />
 
   <!-- XP Bar Fill -->
-  <rect x="220" y="220" width="{{xpPercent}}" height="40" rx="20" fill="{{xpColor}}" />
+  <rect x="220" y="230" width="{{xpPercent}}" height="30" rx="15" fill="{{xpColor}}" />
 
   <!-- XP Text -->
-  <text x="437" y="245" font-size="20" fill="#fff" text-anchor="middle">
+  <text x="437" y="220" font-size="18" fill="#fff" text-anchor="middle">
     <tspan font-weight="bold">{{xp}} XP (Tier {{tier}})</tspan>
   </text>
 
