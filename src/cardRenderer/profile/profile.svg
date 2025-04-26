@@ -52,7 +52,7 @@
   <rect x="220" y="250" width="420" height="10" rx="5" fill="{{surfaceAltColor}}" />
 
   <!-- XP Bar Fill -->
-  <rect x="220" y="230" width="{{xpPercent}}" height="10" rx="5" fill="{{xpColor}}" />
+  <rect x="220" y="250" width="{{xpPercent}}" height="10" rx="5" fill="{{xpColor}}" />
 
   <!-- XP Text -->
   <text x="437" y="240" font-size="18" fill="#fff" text-anchor="middle">
