@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="300">
   <style>
     text {
-      font-family: "Quicksand", "Arial", sans-serif;
+      font-family: "Quicksand", sans-serif;
     }
   </style>
 
