@@ -31,15 +31,6 @@ const tierXpReq = {
 	10: 1125000,
 };
 
-const resources = {
-	quicksandFont400: fs
-		.readFileSync(path.join(__dirname, "quicksand400.ttf.b64"))
-		.toString(),
-	quicksandFont500: fs
-		.readFileSync(path.join(__dirname, "quicksand500.ttf.b64"))
-		.toString(),
-};
-
 async function svgToPng(svg) {
 	return await sharp(Buffer.from(svg)).png().toBuffer();
 }
@@ -66,9 +57,6 @@ async function createProfileCard(profileData, statsData, theme) {
 		"utf8",
 	);
 	const content = {
-		quicksandFont400: resources.quicksandFont400,
-		quicksandFont500: resources.quicksandFont500,
-
 		background: hasBgImage
 			? `<image href="${backgrounds[theme]}" x="0" y="0" width="900" height="300" clip-path="url(#bgClip)"
     preserveAspectRatio="xMidYMid slice" />`
@@ -182,9 +170,6 @@ const skinAttributes = {
 async function createSkinCard(skinData) {
 	let svg = fs.readFileSync(path.join(__dirname, "skin", "skin.svg"), "utf8");
 	const content = {
-		quicksandFont400: resources.quicksandFont400,
-		quicksandFont500: resources.quicksandFont500,
-
 		name: skinData.name,
 		animal: animals[skinData.fish_level] || "Unknown",
 		animalImage: await getImageB64(
