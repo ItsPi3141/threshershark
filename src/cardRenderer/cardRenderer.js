@@ -98,7 +98,7 @@ async function createProfileCard(profileData, statsData, theme) {
 						),
 						1,
 					)) * 420,
-			30,
+			10,
 		),
 		tier: profileData.tier || 1,
 	};
