@@ -2,8 +2,9 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { numberWithCommas } = require("../utils");
 const animals = require("../../animals.json");
-const { getImageB64 } = require("../tools/fetch");
+const { getImageB64, getImageBuffer } = require("../tools/fetch");
 const sharp = require("sharp");
+const { toStaticPng, bufferToB64 } = require("../tools/img");
 
 const tierColors = {
 	1: "#fdbe62",
@@ -64,10 +65,14 @@ async function createProfileCard(profileData, statsData, theme) {
 		surfaceColor: hasBgImage ? "#0006" : "#1f2937",
 		surfaceAltColor: hasBgImage ? "#0003" : "#19212c",
 
-		profilePicture: await getImageB64(
-			profileData.picture !== null
-				? `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
-				: "https://deeeep.io/img/avatar.png",
+		profilePicture: await bufferToB64(
+			await toStaticPng(
+				await getImageBuffer(
+					profileData.picture !== null
+						? `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
+						: "https://deeeep.io/img/avatar.png",
+				),
+			),
 		),
 		userId: profileData.id,
 		profileViews: numberWithCommas(profileData.profile_views),

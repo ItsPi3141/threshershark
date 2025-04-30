@@ -1,5 +1,5 @@
 const { EmbedBuilder, AttachmentBuilder } = require("discord.js");
-const { apng2gif } = require("./tools/apng2gif");
+const { apng2gif } = require("./tools/img");
 const config = require("../config.json");
 
 function numberWithCommas(x) {
