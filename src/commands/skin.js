@@ -53,7 +53,7 @@ module.exports = {
 		await interaction.reply({
 			embeds: [
 				new EmbedBuilder()
-					.setURL(`https://beta.deeeep.io/store/skins/${skinData.id}`)
+					.setURL(`https://deeeep.io/store/skins/${skinData.id}`)
 					.setAuthor({
 						name: skinData.user.username || "Unknown",
 						iconURL: skinData.user.picture
@@ -122,7 +122,7 @@ module.exports = {
 					.setTimestamp(),
 				...additionalAssets.map((asset) =>
 					new EmbedBuilder()
-						.setURL(`https://beta.deeeep.io/store/skins/${skinData.id}`)
+						.setURL(`https://deeeep.io/store/skins/${skinData.id}`)
 						.setImage(asset),
 				),
 			],

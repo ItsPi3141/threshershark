@@ -36,7 +36,7 @@ async function userProfileEmbed(profileData, statsData) {
 	return {
 		embeds: [
 			new EmbedBuilder()
-				.setURL(`https://beta.deeeep.io/u/${profileData.username}`)
+				.setURL(`https://deeeep.io/u/${profileData.username}`)
 				.setTitle(
 					`${profileData.username} ${profileData.verified ? config.emojis.verified : ""}`,
 				)
@@ -116,7 +116,7 @@ async function userProfileEmbed(profileData, statsData) {
 						? isApng
 							? "attachment://pfp.gif"
 							: `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
-						: "https://beta.deeeep.io/img/avatar.png",
+						: "https://deeeep.io/img/avatar.png",
 				)
 				.setTimestamp(),
 		],
