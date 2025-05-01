@@ -523,6 +523,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^2.11.0":
+  version: 2.20.3
+  resolution: "commander@npm:2.20.3"
+  checksum: 10c0/74c781a5248c2402a0a3e966a0a2bba3c054aad144f5c023364be83265e796b20565aa9feff624132ff629aa64e16999fa40a743c10c12f7c61e96a794b99288
+  languageName: node
+  linkType: hard
+
 "content-disposition@npm:0.5.4":
   version: 0.5.4
   resolution: "content-disposition@npm:0.5.4"
@@ -1194,6 +1201,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"opentype.js@npm:0.11.0":
+  version: 0.11.0
+  resolution: "opentype.js@npm:0.11.0"
+  dependencies:
+    string.prototype.codepointat: "npm:^0.2.1"
+    tiny-inflate: "npm:^1.0.2"
+  bin:
+    ot: ./bin/ot
+  checksum: 10c0/7fb1d2cd4b12a68371e113ef15b935f18b19d8cfb2f5fdf1c140f754ff41fd556b9066569d4eaf0ea8c543f1c6036b3a0afb2a294c9cc5fac8806d863c1a42f5
+  languageName: node
+  linkType: hard
+
 "package-json-from-dist@npm:^1.0.0":
   version: 1.0.1
   resolution: "package-json-from-dist@npm:1.0.1"
@@ -1567,6 +1586,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"string.prototype.codepointat@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "string.prototype.codepointat@npm:0.2.1"
+  checksum: 10c0/83c4d2f83b6f3f8f377e0b36628b74a9efcaf5a725e6fb6354f15f30f0399c8f4b08956df883877b2b0f50dd2e644ed7e8b1f6d45bdee2dc5b3f4248796607fa
+  languageName: node
+  linkType: hard
+
 "strip-ansi-cjs@npm:strip-ansi@^6.0.1, strip-ansi@npm:^6.0.0, strip-ansi@npm:^6.0.1":
   version: 6.0.1
   resolution: "strip-ansi@npm:6.0.1"
@@ -1585,6 +1611,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"text-to-svg@npm:^3.1.5":
+  version: 3.1.5
+  resolution: "text-to-svg@npm:3.1.5"
+  dependencies:
+    commander: "npm:^2.11.0"
+    opentype.js: "npm:0.11.0"
+  bin:
+    text-to-svg: bin/text-to-svg
+  checksum: 10c0/2dadbf7e134a76502a8c6aa9032891d0e8bca37f2359ffeb8e96a65ce5b17ce8043ad42f801c86ac5c346c0febb2ff3df0fa3a2bb3ed4780f4c5aadfd996917a
+  languageName: node
+  linkType: hard
+
 "threshershark@workspace:.":
   version: 0.0.0-use.local
   resolution: "threshershark@workspace:."
@@ -1595,8 +1633,16 @@ __metadata:
     mongoose: "npm:^8.4.0"
     sharp: "npm:^0.34.1"
     sharp-apng: "npm:^0.1.5"
+    text-to-svg: "npm:^3.1.5"
   languageName: unknown
   linkType: soft
+
+"tiny-inflate@npm:^1.0.2":
+  version: 1.0.3
+  resolution: "tiny-inflate@npm:1.0.3"
+  checksum: 10c0/fab687537254f6ec44c9a2e880048fe70da3542aba28f73cda3e74c95cabf342a339372f2a6c032e322324f01accc03ca26c04ba2bad9b3eb8cf3ee99bba7f9b
+  languageName: node
+  linkType: hard
 
 "toidentifier@npm:1.0.1":
   version: 1.0.1

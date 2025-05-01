@@ -17,7 +17,8 @@
 		"is-apng": "^1.0.1",
 		"mongoose": "^8.4.0",
 		"sharp": "^0.34.1",
-		"sharp-apng": "^0.1.5"
+		"sharp-apng": "^0.1.5",
+		"text-to-svg": "^3.1.5"
 	},
 	"packageManager": "yarn@4.9.1"
 }
