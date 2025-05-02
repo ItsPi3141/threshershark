@@ -45,7 +45,7 @@ module.exports = {
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
 
-		interaction.deferReply();
+		await interaction.deferReply();
 
 		const mapUrl =
 			interaction.options.getString("mode") === "sid"
