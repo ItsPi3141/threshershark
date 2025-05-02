@@ -3,10 +3,12 @@ const {
 	ActionRowBuilder,
 	ButtonStyle,
 	ButtonBuilder,
+	AttachmentBuilder,
 } = require("discord.js");
 const { getPage } = require("../tools/fetch.js");
 const { numberWithCommas } = require("../utils.js");
 const { EmbedBuilder } = require("discord.js");
+const { createMapPreview } = require("../mapRenderer/mapRenderer.js");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -121,6 +123,12 @@ module.exports = {
 				})`;
 			})
 			.join("\n");
+
+		const mapPreviewImg = await createMapPreview(mapObjectData);
+		const mapPreviewAttachment = new AttachmentBuilder(mapPreviewImg, {
+			name: "map.png",
+		});
+
 		await interaction.reply({
 			embeds: [
 				new EmbedBuilder()
@@ -179,11 +187,13 @@ module.exports = {
 							inline: false,
 						},
 					)
+					.setImage("attachment://map.png")
 					.setFooter({
 						text: `String ID: ${mapData.string_id} • Numerical ID: ${mapData.id}`,
 					})
 					.setTimestamp(),
 			],
+			files: [mapPreviewAttachment],
 		});
 	},
 };
