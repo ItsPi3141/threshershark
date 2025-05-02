@@ -1,4 +1,5 @@
 const sharp = require("sharp");
+const fs = require("fs");
 
 const terrainColorById = {
 	1: "#321e14",
@@ -30,13 +31,24 @@ async function createMapPreview(data) {
 
 	let defs = "<defs>";
 	let paths = "";
+	let idCounter = 0;
 	for (const sky of skies) {
-		paths += `<path d="${sky.points.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `${p.x} ${p.y}`)).join(" ")}" fill="url(#g${sky.id})" />`;
-		defs += `<linearGradient id="g${sky.id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#${sky.colors[0].toString(16).padStart(6, "0")}" /><stop offset="100%" stop-color="#${sky.colors[1].toString(16).padStart(6, "0")}" /></linearGradient>`;
+		if (sky.colors[0] === sky.colors[1]) {
+			paths += `<path d="${sky.points.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `${p.x} ${p.y}`)).join(" ")}" fill="#${sky.colors[0].toString(16).padStart(6, "0")}" />`;
+		} else {
+			paths += `<path d="${sky.points.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `${p.x} ${p.y}`)).join(" ")}" fill="url(#g${idCounter})" />`;
+			defs += `<linearGradient id="g${idCounter}" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#${sky.colors[0].toString(16).padStart(6, "0")}" /><stop offset="100%" stop-color="#${sky.colors[1].toString(16).padStart(6, "0")}" /></linearGradient>`;
+			idCounter++;
+		}
 	}
 	for (const water of waters) {
-		paths += `<path d="${water.points.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `${p.x} ${p.y}`)).join(" ")}" fill="url(#g${water.id})" />`;
-		defs += `<linearGradient id="g${water.id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#${water.colors[0].toString(16).padStart(6, "0")}" /><stop offset="100%" stop-color="#${water.colors[1].toString(16).padStart(6, "0")}" /></linearGradient>`;
+		if (water.colors[0] === water.colors[1]) {
+			paths += `<path d="${water.points.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `${p.x} ${p.y}`)).join(" ")}" fill="#${water.colors[0].toString(16).padStart(6, "0")}" />`;
+		} else {
+			paths += `<path d="${water.points.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `${p.x} ${p.y}`)).join(" ")}" fill="url(#g${idCounter})" />`;
+			defs += `<linearGradient id="g${idCounter}" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#${water.colors[0].toString(16).padStart(6, "0")}" /><stop offset="100%" stop-color="#${water.colors[1].toString(16).padStart(6, "0")}" /></linearGradient>`;
+			idCounter++;
+		}
 
 		if (!water.hasBorder) continue;
 		const points = water.points;
