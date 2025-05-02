@@ -39,6 +39,8 @@ module.exports = {
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
 
+		interaction.deferReply();
+
 		const mapUrl =
 			interaction.options.getString("mode") === "sid"
 				? `https://api.deeeep.io/maps/s/${interaction.options.getString("map")}`
@@ -124,81 +126,75 @@ module.exports = {
 			})
 			.join("\n");
 
-		const embed = new EmbedBuilder()
-			.setAuthor({
-				name: mapData.user.username,
-				iconURL: `https://cdn.deeeep.io/uploads/avatars/${mapData.user.picture}`,
-				url: `https://deeeep.io/u/${mapData.user.username}`,
-			})
-			.setURL(`https://mapmaker.deeeep.io/map/${mapData.string_id}`)
-			.setTitle(mapData.title)
-			.setDescription(mapData.description || "*No description*")
-			.addFields(
-				{
-					name: "Likes",
-					value: numberWithCommas(mapData.likes),
-					inline: true,
-				},
-				{
-					name: "Locked",
-					value: mapData.locked ? "Yes" : "No",
-					inline: true,
-				},
-				{
-					name: "Dimensions",
-					value: `${numberWithCommas(Number.parseFloat(mapObjectData.worldSize.width))} x ${numberWithCommas(
-						Number.parseFloat(mapObjectData.worldSize.height),
-					)}`,
-					inline: true,
-				},
-				{
-					name: "Gravity",
-					value: `${mapObjectData.settings.gravity}`,
-					inline: true,
-				},
-				{
-					name: "Date created",
-					value: `<t:${Math.round(Date.parse(mapData.created_at) / 1000)}:F>`,
-					inline: true,
-				},
-				{
-					name: "Date last updated",
-					value: `<t:${Math.round(Date.parse(mapData.updated_at) / 1000)}:F>`,
-					inline: true,
-				},
-				{
-					name: "Object count",
-					value: `**Total: ${totalCount.count} ${totalCount.count === 1 ? "object" : "objects"} (${totalCount.points} ${
-						totalCount.points === 1 ? "point" : "points"
-					})**\n${humanReadableObjectCount}`,
-					inline: false,
-				},
-				{
-					name: "Tags",
-					value:
-						mapData.tags.map((t) => `\`${t.id}\``).join(", ") || "*No tags*",
-					inline: false,
-				},
-			)
-			.setFooter({
-				text: `String ID: ${mapData.string_id} • Numerical ID: ${mapData.id}`,
-			})
-			.setTimestamp();
-
-		const showPreview = mapObjectData.screenObjects.length < 10000;
-		if (!showPreview) {
-			return await interaction.reply({
-				embeds: [embed],
-			});
-		}
 		const mapPreviewImg = await createMapPreview(mapObjectData);
 		const mapPreviewAttachment = new AttachmentBuilder(mapPreviewImg, {
 			name: "map.png",
 		});
-		embed.setImage("attachment://map.png");
 
-		await interaction.reply({
-			embeds: [embed],
+		await interaction.editReply({
+			embeds: [
+				new EmbedBuilder()
+					.setAuthor({
+						name: mapData.user.username,
+						iconURL: `https://cdn.deeeep.io/uploads/avatars/${mapData.user.picture}`,
+					})
+					.setURL(`https://mapmaker.deeeep.io/map/${mapData.string_id}`)
+					.setTitle(mapData.title)
+					.setDescription(mapData.description || "*No description*")
+					.addFields(
+						{
+							name: "Likes",
+							value: numberWithCommas(mapData.likes),
+							inline: true,
+						},
+						{
+							name: "Locked",
+							value: mapData.locked ? "Yes" : "No",
+							inline: true,
+						},
+						{
+							name: "Dimensions",
+							value: `${numberWithCommas(Number.parseFloat(mapObjectData.worldSize.width))} x ${numberWithCommas(
+								Number.parseFloat(mapObjectData.worldSize.height),
+							)}`,
+							inline: true,
+						},
+						{
+							name: "Gravity",
+							value: `${mapObjectData.settings.gravity}`,
+							inline: true,
+						},
+						{
+							name: "Date created",
+							value: `<t:${Math.round(Date.parse(mapData.created_at) / 1000)}:F>`,
+							inline: true,
+						},
+						{
+							name: "Date last updated",
+							value: `<t:${Math.round(Date.parse(mapData.updated_at) / 1000)}:F>`,
+							inline: true,
+						},
+						{
+							name: "Object count",
+							value: `**Total: ${totalCount.count} ${totalCount.count === 1 ? "object" : "objects"} (${totalCount.points} ${
+								totalCount.points === 1 ? "point" : "points"
+							})**\n${humanReadableObjectCount}`,
+							inline: false,
+						},
+						{
+							name: "Tags",
+							value:
+								mapData.tags.map((t) => `\`${t.id}\``).join(", ") ||
+								"*No tags*",
+							inline: false,
+						},
+					)
+					.setImage("attachment://map.png")
+					.setFooter({
+						text: `String ID: ${mapData.string_id} • Numerical ID: ${mapData.id}`,
+					})
+					.setTimestamp(),
+			],
 			files: [mapPreviewAttachment],
 		});
 	},
