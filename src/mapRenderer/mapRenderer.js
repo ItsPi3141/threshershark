@@ -1,5 +1,4 @@
 const sharp = require("sharp");
-const fs = require("fs");
 
 const terrainColorById = {
 	1: "#321e14",
