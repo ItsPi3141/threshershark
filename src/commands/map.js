@@ -47,7 +47,9 @@ module.exports = {
 
 		try {
 			await interaction.deferReply();
-		} catch {}
+		} catch (e) {
+			console.error(e);
+		}
 
 		const mapUrl =
 			interaction.options.getString("mode") === "sid"
@@ -199,7 +201,7 @@ module.exports = {
 				embeds: [embed],
 			});
 		}
-		await interaction.followUp({
+		await interaction.editReply({
 			content: "⌛ Generating map preview...",
 		});
 		const mapPreviewImg = await createMapPreview(mapObjectData);
