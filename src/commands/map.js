@@ -60,7 +60,7 @@ module.exports = {
 			throw new Error("Cloudflare error!");
 		}
 		if (!mapData.id) {
-			return await interaction.reply(
+			return await interaction.editReply(
 				"⚠️ Map not found! Make sure you have inputted a valid ID.",
 			);
 		}
