@@ -141,3 +141,11 @@ process.on("multipleResolves", (type, promise, reason) => {
 	// console.log(" [Error_Handling] :: Multiple Resolves");
 	// console.log(type, promise, reason);
 });
+
+process.stdin.resume();
+const exitHandler = (code) => {
+	console.log("Exit code", code);
+	process.exit();
+};
+process.on("exit", exitHandler);
+process.on("SIGINT", exitHandler);
