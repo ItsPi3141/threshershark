@@ -199,7 +199,7 @@ module.exports = {
 				embeds: [embed],
 			});
 		}
-		await interaction.editReply({
+		await interaction.followUp({
 			content: "⌛ Generating map preview...",
 		});
 		const mapPreviewImg = await createMapPreview(mapObjectData);
