@@ -73,7 +73,7 @@ async function createMapPreview(data) {
 	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${data.worldSize.width * 10}" height="${data.worldSize.height * 10}">${defs}${paths}</svg>`;
 
 	return await sharp(Buffer.from(svg))
-		.resize({ width: 2560, height: 1280, fit: "inside" })
+		.resize({ width: 1440, height: 720, fit: "inside" })
 		.png()
 		.toBuffer();
 }
