@@ -199,6 +199,9 @@ module.exports = {
 				embeds: [embed],
 			});
 		}
+		await interaction.editReply({
+			content: "⌛ Generating map preview...",
+		});
 		const mapPreviewImg = await createMapPreview(mapObjectData);
 		const mapPreviewAttachment = new AttachmentBuilder(mapPreviewImg, {
 			name: "map.png",
@@ -206,6 +209,7 @@ module.exports = {
 		embed.setImage("attachment://map.png");
 
 		await interaction.editReply({
+			content: "",
 			embeds: [embed],
 			files: [mapPreviewAttachment],
 		});
