@@ -58,7 +58,7 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 						value: profileData.badges
 							.map((b) => config.emojis[b.slug])
 							.join(" "),
-						inline: true,
+						inline: false,
 					},
 					{
 						name: "Kills",
