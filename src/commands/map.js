@@ -1,14 +1,9 @@
-const {
-	SlashCommandBuilder,
-	ActionRowBuilder,
-	ButtonStyle,
-	ButtonBuilder,
-	AttachmentBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
 const { getPage } = require("../tools/fetch.js");
 const { numberWithCommas } = require("../utils.js");
 const { EmbedBuilder } = require("discord.js");
 const { createMapPreview } = require("../mapRenderer/mapRenderer.js");
+const config = require("../../config.json");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -45,11 +40,9 @@ module.exports = {
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
 
-		try {
-			await interaction.deferReply();
-		} catch (e) {
-			console.error(e);
-		}
+		await interaction.reply({
+			content: `${config.emojis.loading} Fetching data...`,
+		});
 
 		const mapUrl =
 			interaction.options.getString("mode") === "sid"
@@ -61,9 +54,11 @@ module.exports = {
 		}
 		if (!mapData.id) {
 			return await interaction.editReply(
-				"⚠️ Map not found! Make sure you have inputted a valid ID.",
+				`${config.emojis.false} Map not found! Make sure you have inputted a valid ID.`,
 			);
 		}
+
+		await interaction.editReply(`${config.emojis.loading} Counting objects...`);
 
 		const countedObjects = [
 			"currents",
@@ -201,9 +196,10 @@ module.exports = {
 				embeds: [embed],
 			});
 		}
-		await interaction.editReply({
-			content: "⌛ Generating map preview...",
-		});
+
+		await interaction.editReply(
+			`${config.emojis.loading} Generating map preview...`,
+		);
 		const mapPreviewImg = await createMapPreview(mapObjectData);
 		const mapPreviewAttachment = new AttachmentBuilder(mapPreviewImg, {
 			name: "map.png",

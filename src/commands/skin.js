@@ -1,9 +1,4 @@
-const {
-	SlashCommandBuilder,
-	ActionRowBuilder,
-	ButtonStyle,
-	ButtonBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 const { getPage } = require("../tools/fetch.js");
 const { numberWithCommas } = require("../utils.js");
 const { EmbedBuilder } = require("discord.js");
@@ -26,6 +21,8 @@ module.exports = {
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
 
+		await interaction.reply(`${config.emojis.loading} Fetching data...`);
+
 		const skinUrl = `https://api.deeeep.io/skins/${interaction.options.getNumber("id")}${
 			interaction.options.getNumber("version")
 				? `/${interaction.options.getNumber("version")}`
@@ -36,8 +33,8 @@ module.exports = {
 			throw new Error("Cloudflare error!");
 		}
 		if (!skinData.id) {
-			return await interaction.reply(
-				"⚠️ Skin not found! Make sure you have inputted a valid ID.",
+			return await interaction.editReply(
+				`${config.emojis.false} Skin not found! Make sure you have inputted a valid ID.`,
 			);
 		}
 
@@ -50,7 +47,7 @@ module.exports = {
 				);
 			}
 		}
-		await interaction.reply({
+		await interaction.editReply({
 			embeds: [
 				new EmbedBuilder()
 					.setURL(`https://deeeep.io/store/skins/${skinData.id}`)

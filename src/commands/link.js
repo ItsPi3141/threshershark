@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { getPage } = require("../tools/fetch.js");
 const { connectAccount } = require("../tools/mongo.js");
+const config = require("../../config.json");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,14 +16,18 @@ module.exports = {
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
 
+		await interaction.reply({
+			content: `${config.emojis.loading} Finding your account...`,
+		});
+
 		const profileUrl = `https://api.deeeep.io/users/u/${interaction.options.getString("username")}?ref=profile`;
 		const profileData = await getPage(profileUrl);
 		if (profileData === null) {
 			throw new Error("Cloudflare error!");
 		}
 		if (!profileData.id) {
-			await interaction.reply(
-				"⚠️ Failed to link your account! Make sure you have inputted a valid username.",
+			await interaction.editReply(
+				`${config.emojis.false} Failed to link your account! Make sure you have inputted a valid username.`,
 			);
 			return;
 		}
@@ -45,15 +50,15 @@ module.exports = {
 		}
 
 		if (!isValid) {
-			await interaction.reply(
-				"⚠️ Failed to link your account! Make sure your Discord username is added as a social link on your Deeeep.io profile.",
+			await interaction.editReply(
+				`${config.emojis.false} Failed to link your account! Make sure your Discord username is added as a social link on your Deeeep.io profile.`,
 			);
 			return;
 		}
 
 		await connectAccount(interaction.user.id, profileData.id);
-		return await interaction.reply(
-			`✅ You're now linked to ${profileData.username}!`,
+		return await interaction.editReply(
+			`${config.emojis.true} You're now linked to ${profileData.username}!`,
 		);
 	},
 };

@@ -1,11 +1,7 @@
-const {
-	SlashCommandBuilder,
-	ActionRowBuilder,
-	ButtonStyle,
-	ButtonBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 const { getPage } = require("../tools/fetch.js");
 const { userProfileEmbed } = require("../utils.js");
+const config = require("../../config.json");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -36,6 +32,10 @@ module.exports = {
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
 
+		await interaction.reply({
+			content: `${config.emojis.loading} Fetching data...`,
+		});
+
 		const profileUrl =
 			interaction.options.getString("mode") === "username"
 				? `https://api.deeeep.io/users/u/${interaction.options.getString("user")}?ref=profile`
@@ -45,8 +45,8 @@ module.exports = {
 			throw new Error("Cloudflare error!");
 		}
 		if (!profileData.id) {
-			return await interaction.reply(
-				`⚠️ Account not found! Make sure you have inputted a valid ${interaction.options.getString("mode") === "username" ? "username" : "user ID"}.`,
+			return await interaction.editReply(
+				`${config.emojis.false} Account not found! Make sure you have inputted a valid ${interaction.options.getString("mode") === "username" ? "username" : "user ID"}.`,
 			);
 		}
 
@@ -67,7 +67,8 @@ module.exports = {
 			statsData,
 			socialNetworksData,
 		);
-		await interaction.reply({
+		await interaction.editReply({
+			content: "",
 			embeds: embedData.embeds,
 			files: embedData.files,
 		});

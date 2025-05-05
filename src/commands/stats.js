@@ -1,12 +1,8 @@
-const {
-	SlashCommandBuilder,
-	ActionRowBuilder,
-	ButtonStyle,
-	ButtonBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 const { getPage } = require("../tools/fetch.js");
 const { getConnectedAccount } = require("../tools/mongo.js");
 const { userProfileEmbed } = require("../utils.js");
+const config = require("../../config.json");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -26,9 +22,13 @@ module.exports = {
 		);
 		if (!id) {
 			return await interaction.reply({
-				content: `${interaction.options.getUser("user")?.id ? "This user is" : "You are"} not connected to a Deeeep.io account!`,
+				content: `${config.emojis.false} ${interaction.options.getUser("user")?.id ? "This user is" : "You are"} not connected to a Deeeep.io account!`,
 			});
 		}
+
+		await interaction.reply({
+			content: `${config.emojis.loading} Fetching data...`,
+		});
 
 		const profileUrl = `https://api.deeeep.io/users/${id}?ref=profile`;
 		const profileData = await getPage(profileUrl);
@@ -53,7 +53,8 @@ module.exports = {
 			statsData,
 			socialNetworksData,
 		);
-		await interaction.reply({
+		await interaction.editReply({
+			content: "",
 			embeds: embedData.embeds,
 			files: embedData.files,
 		});

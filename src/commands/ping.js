@@ -14,7 +14,7 @@ module.exports = {
 		await getPage("https://api.deeeep.io/users/5");
 		const t2 = Date.now();
 		interaction
-			.reply(`Calculating ping... ${config.emojis.loading}`)
+			.reply(`${config.emojis.loading} Calculating ping...`)
 			.then((i) => {
 				i.edit(
 					`Discord: \`${Math.round(Date.now() - t1)}ms\`\nDeeeep.io: \`${Math.round(t2 - t1)}ms\``,

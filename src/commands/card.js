@@ -87,11 +87,13 @@ module.exports = {
 			) {
 				if (!interaction.options.getString("user")) {
 					return await interaction.reply(
-						"⚠️ You must specify a user to search for!",
+						`${config.emojis.false} You must specify a user to search for!`,
 					);
 				}
 				if (!interaction.options.getString("mode")) {
-					return await interaction.reply("⚠️ You must specify a search mode!");
+					return await interaction.reply(
+						`${config.emojis.false} You must specify a search mode!`,
+					);
 				}
 
 				const profileUrl =
@@ -104,7 +106,7 @@ module.exports = {
 				}
 				if (!profileData.id) {
 					return await interaction.reply(
-						`⚠️ Account not found! Make sure you have inputted a valid ${
+						`${config.emojis.false} Account not found! Make sure you have inputted a valid ${
 							interaction.options.getString("mode") === "username"
 								? "username"
 								: "user ID"
@@ -121,7 +123,7 @@ module.exports = {
 				const id = await getConnectedAccount(interaction.user.id);
 				if (!id) {
 					return await interaction.reply({
-						content: "You're not connected to a Deeeep.io account!",
+						content: `${config.emojis.false} You're not connected to a Deeeep.io account!`,
 					});
 				}
 

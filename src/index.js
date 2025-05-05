@@ -9,6 +9,7 @@ const {
 	Events,
 	PresenceUpdateStatus,
 } = require("discord.js");
+const config = require("../config.json");
 
 const client = new Client({
 	intents: [],
@@ -57,14 +58,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		} catch (error) {
 			console.error(error);
 			if (interaction.replied || interaction.deferred) {
-				await interaction.followUp({
-					content: "There was an error while executing this command!",
-					ephemeral: true,
+				await interaction.editReply({
+					content: `${config.emojis.false} There was an error while executing this command!`,
 				});
 			} else {
 				await interaction.reply({
-					content: "There was an error while executing this command!",
-					ephemeral: true,
+					content: `${config.emojis.false} There was an error while executing this command!`,
 				});
 			}
 		}
