@@ -56,7 +56,17 @@ module.exports = {
 			throw new Error("Cloudflare error!");
 		}
 
-		const embedData = await userProfileEmbed(profileData, statsData);
+		const socialNetworksUrl = `https://api.deeeep.io/socialNetworks/u/${profileData.id}`;
+		const socialNetworksData = await getPage(socialNetworksUrl);
+		if (socialNetworksData === null) {
+			throw new Error("Cloudflare error!");
+		}
+
+		const embedData = await userProfileEmbed(
+			profileData,
+			statsData,
+			socialNetworksData,
+		);
 		await interaction.reply({
 			embeds: embedData.embeds,
 			files: embedData.files,

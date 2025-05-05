@@ -8,7 +8,7 @@ function numberWithCommas(x) {
 		: "N/A";
 }
 
-async function userProfileEmbed(profileData, statsData) {
+async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 	const hasPfp = !!profileData.picture;
 	let gifData = null;
 	let isApng = false;
@@ -105,6 +105,17 @@ async function userProfileEmbed(profileData, statsData) {
 					{
 						name: "Death message",
 						value: profileData.description?.toString() || "*No death message*",
+						inline: false,
+					},
+					socialNetworksData.length > 0 && {
+						name: "Social networks",
+						value: socialNetworksData
+							.map((n) =>
+								n.platform_user_url
+									? `${config.emojis[n.platform_id]} [${n.platform_user_id}](${n.platform_user_url})`
+									: `${config.emojis[n.platform_id]} ${n.platform_user_id}`,
+							)
+							.join("\n"),
 						inline: false,
 					},
 				)

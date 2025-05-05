@@ -5,8 +5,6 @@ const {
 	Routes,
 	Client,
 	Collection,
-	GatewayIntentBits,
-	Partials,
 	ActivityType,
 	Events,
 	PresenceUpdateStatus,

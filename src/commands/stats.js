@@ -26,7 +26,7 @@ module.exports = {
 		);
 		if (!id) {
 			return await interaction.reply({
-				content: `${interaction.options.getUser("user")?.id ? "This user" : "You are"} not connected to a Deeeep.io account!`,
+				content: `${interaction.options.getUser("user")?.id ? "This user is" : "You are"} not connected to a Deeeep.io account!`,
 			});
 		}
 
@@ -42,7 +42,17 @@ module.exports = {
 			throw new Error("Cloudflare error!");
 		}
 
-		const embedData = await userProfileEmbed(profileData, statsData);
+		const socialNetworksUrl = `https://api.deeeep.io/socialNetworks/u/${profileData.id}`;
+		const socialNetworksData = await getPage(socialNetworksUrl);
+		if (socialNetworksData === null) {
+			throw new Error("Cloudflare error!");
+		}
+
+		const embedData = await userProfileEmbed(
+			profileData,
+			statsData,
+			socialNetworksData,
+		);
 		await interaction.reply({
 			embeds: embedData.embeds,
 			files: embedData.files,
