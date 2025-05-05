@@ -53,6 +53,13 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 				)
 				.setDescription(profileData.about?.toString() || "*No description*")
 				.addFields(
+					profileData.badges.length > 0 && {
+						name: "Badges",
+						value: profileData.badges
+							.map((b) => config.emojis[b.slug])
+							.join(" "),
+						inline: true,
+					},
 					{
 						name: "Kills",
 						value: `${numberWithCommas(profileData.kill_count)} (#${numberWithCommas(statsData.rank_kc)})`,
