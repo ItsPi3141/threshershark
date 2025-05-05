@@ -8,6 +8,17 @@ function numberWithCommas(x) {
 		: "N/A";
 }
 
+const socialNetworks = {
+	ig: "https://instagram.com/",
+	rd: "https://reddit.com/u/",
+	tc: "https://twitch.tv/",
+	tw: "https://x.com/",
+	wb: "https://weibo.com/",
+	fb: true,
+	vk: true,
+	yt: true,
+};
+
 async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 	const hasPfp = !!profileData.picture;
 	let gifData = null;
@@ -110,11 +121,15 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 					socialNetworksData.length > 0 && {
 						name: "Social networks",
 						value: socialNetworksData
-							.map((n) =>
-								n.platform_user_url
-									? `${config.emojis[n.platform_id]} [${n.platform_user_id}](${n.platform_user_url})`
-									: `${config.emojis[n.platform_id]} ${n.platform_user_id}`,
-							)
+							.map((n) => {
+								if (typeof socialNetworks[n.platform_id] === "string") {
+									return `${config.emojis[n.platform_id]} [${n.platform_user_id}](${socialNetworks[n.platform_id] + n.platform_user_id})`;
+								}
+								if (typeof socialNetworks[n.platform_id] === "boolean") {
+									return `${config.emojis[n.platform_id]} [${n.platform_user_id}](${n.platform_user_url})`;
+								}
+								return `${config.emojis[n.platform_id]} ${n.platform_user_id}`;
+							})
 							.join("\n"),
 						inline: false,
 					},
