@@ -141,9 +141,7 @@ module.exports = {
 					throw new Error("Cloudflare error!");
 				}
 			}
-			await interaction.editReply(
-				`${config.emojis.loading} Generating card...`,
-			);
+			await interaction.reply(`${config.emojis.loading} Generating card...`);
 
 			const card = await createProfileCard(
 				profileData,
