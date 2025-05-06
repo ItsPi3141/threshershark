@@ -107,7 +107,7 @@ module.exports = {
 					throw new Error("Cloudflare error!");
 				}
 				if (!profileData.id) {
-					return await interaction.reply(
+					return await interaction.editReply(
 						`${config.emojis.false} Account not found! Make sure you have inputted a valid ${
 							interaction.options.getString("mode") === "username"
 								? "username"
