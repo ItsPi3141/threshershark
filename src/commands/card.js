@@ -96,6 +96,8 @@ module.exports = {
 					);
 				}
 
+				await interaction.reply(`${config.emojis.loading} Fetching data...`);
+
 				const profileUrl =
 					interaction.options.getString("mode") === "username"
 						? `https://api.deeeep.io/users/u/${interaction.options.getString("user")}?ref=profile`
@@ -141,7 +143,9 @@ module.exports = {
 					throw new Error("Cloudflare error!");
 				}
 			}
-			await interaction.reply(`${config.emojis.loading} Generating card...`);
+			await interaction.editReply(
+				`${config.emojis.loading} Generating card...`,
+			);
 
 			const card = await createProfileCard(
 				profileData,
