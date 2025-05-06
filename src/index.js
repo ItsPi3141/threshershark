@@ -146,3 +146,5 @@ const exitHandler = (code) => {
 };
 process.on("exit", exitHandler);
 process.on("SIGINT", exitHandler);
+process.on("SIGTERM", exitHandler);
+process.on("SIGKILL", exitHandler);
