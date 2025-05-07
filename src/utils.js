@@ -159,7 +159,26 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 	};
 }
 
+class FunctionQueue {
+	constructor() {
+		this.queue = Promise.resolve();
+		this._length = 0;
+	}
+
+	async enqueue(fn) {
+		this._length++;
+		const result = this.queue.then(() => fn());
+		this.queue = result.finally(() => this._length--);
+		return await result;
+	}
+
+	get length() {
+		return this._length;
+	}
+}
+
 module.exports = {
 	numberWithCommas,
 	userProfileEmbed,
+	FunctionQueue,
 };

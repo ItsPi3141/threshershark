@@ -1,9 +1,11 @@
 const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
 const { getPage } = require("../tools/fetch.js");
-const { numberWithCommas } = require("../utils.js");
+const { numberWithCommas, FunctionQueue } = require("../utils.js");
 const { EmbedBuilder } = require("discord.js");
 const { createMapPreview } = require("../mapRenderer/mapRenderer.js");
 const config = require("../../config.json");
+
+const previewQueue = new FunctionQueue();
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -198,9 +200,11 @@ module.exports = {
 		}
 
 		await interaction.editReply(
-			`${config.emojis.loading} Generating map preview...`,
+			`${config.emojis.loading} Generating map preview...\n-# #${previewQueue.length + 1} in queue`,
 		);
-		const mapPreviewImg = await createMapPreview(mapObjectData);
+		const mapPreviewImg = await previewQueue.enqueue(() =>
+			createMapPreview(mapObjectData),
+		);
 		const mapPreviewAttachment = new AttachmentBuilder(mapPreviewImg, {
 			name: "map.png",
 		});
