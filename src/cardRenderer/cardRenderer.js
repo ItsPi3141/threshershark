@@ -139,10 +139,8 @@ async function createProfileCard(profileData, statsData, theme) {
 			(profileData.tier === 10
 				? 1
 				: Math.min(
-						Math.round(
-							(profileData.xp - tierXpReq[profileData.tier]) /
-								(tierXpReq[profileData.tier + 1] - tierXpReq[profileData.tier]),
-						),
+						(profileData.xp - tierXpReq[profileData.tier]) /
+							(tierXpReq[profileData.tier + 1] - tierXpReq[profileData.tier]),
 						1,
 					)) * 420,
 			10,
