@@ -136,22 +136,27 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 			inline: false,
 		});
 
-	socialNetworksData.length > 0 &&
+	if (socialNetworksData.length > 0) {
+		let s = socialNetworksData
+			.map((n) => {
+				if (typeof socialNetworks[n.platform_id] === "string") {
+					return `${config.emojis[n.platform_id]} [${n.platform_user_id}](${socialNetworks[n.platform_id] + n.platform_user_id})`;
+				}
+				if (typeof socialNetworks[n.platform_id] === "boolean") {
+					return `${config.emojis[n.platform_id]} [${n.platform_user_id}](${n.platform_user_url})`;
+				}
+				return `${config.emojis[n.platform_id]} ${n.platform_user_id}`;
+			})
+			.join("\n");
+		while (s.length > 1024) {
+			s = s.split("\n").slice(0, -1).join("\n");
+		}
 		embed.addFields({
 			name: "Social networks",
-			value: socialNetworksData
-				.map((n) => {
-					if (typeof socialNetworks[n.platform_id] === "string") {
-						return `${config.emojis[n.platform_id]} [${n.platform_user_id}](${socialNetworks[n.platform_id] + n.platform_user_id})`;
-					}
-					if (typeof socialNetworks[n.platform_id] === "boolean") {
-						return `${config.emojis[n.platform_id]} [${n.platform_user_id}](${n.platform_user_url})`;
-					}
-					return `${config.emojis[n.platform_id]} ${n.platform_user_id}`;
-				})
-				.join("\n"),
+			value: s,
 			inline: false,
 		});
+	}
 
 	return {
 		embeds: [embed],
