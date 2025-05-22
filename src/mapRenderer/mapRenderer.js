@@ -1,3 +1,4 @@
+const fs = require("node:fs");
 const sharp = require("sharp");
 
 const terrainColorById = {
@@ -22,10 +23,19 @@ const terrainColorById = {
 	19: "#14161c",
 };
 
+const hidespaceById = {};
+for (const hidespace of fs.readdirSync("./src/mapRenderer/hidespaces")) {
+	hidespaceById[hidespace.split(".").shift()] = fs.readFileSync(
+		`./src/mapRenderer/hidespaces/${hidespace}`,
+	);
+}
+console.log(`Loaded ${Object.keys(hidespaceById).length} hide spaces.`);
+
 async function createMapPreview(data) {
 	const skies = data.screenObjects.filter((o) => o.type === "Sky");
 	const waters = data.screenObjects.filter((o) => o.type === "Wat");
 	const bgTerrains = data.screenObjects.filter((o) => o.type === "Bg");
+	const hideSpaces = data.screenObjects.filter((o) => o.type === "H");
 	const terrains = data.screenObjects.filter((o) => o.type === "Ter");
 
 	let defs = "<defs>";
@@ -66,16 +76,24 @@ async function createMapPreview(data) {
 	for (const bgTerrain of bgTerrains) {
 		paths += `<path d="${bgTerrain.points.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `${p.x} ${p.y}`)).join(" ")}" fill="${terrainColorById[bgTerrain.texture]}" opacity="${bgTerrain.opacity}" />`;
 	}
+	for (const hideSpace of hideSpaces) {
+		paths += `<g transform="translate(${hideSpace.x},${hideSpace.y}) rotate(${hideSpace.rotation}) scale(10)"${hideSpace.opacity ? ` opacity="${hideSpace.opacity}"` : ""}>${hidespaceById[hideSpace.hSType]}</g>`;
+	}
 	for (const terrain of terrains) {
 		paths += `<path d="${terrain.points.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `${p.x} ${p.y}`)).join(" ")}" fill="${terrainColorById[terrain.texture]}" />`;
 	}
 	defs += "</defs>";
 	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${data.worldSize.width * 10}" height="${data.worldSize.height * 10}">${defs}${paths}</svg>`;
 
-	return await sharp(Buffer.from(svg))
-		.resize({ width: 1440, height: 720, fit: "inside" })
+	const img = await sharp(Buffer.from(svg))
+		.resize({
+			width: Math.max(Math.min(data.worldSize.width * 10, 4000), 1000),
+			height: Math.max(Math.min(data.worldSize.height * 10, 4000), 1000),
+			fit: "inside",
+		})
 		.png()
 		.toBuffer();
+	return img;
 }
 
 function makeBrighter(color, brightnessFactor) {
