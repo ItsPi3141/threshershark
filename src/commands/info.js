@@ -1,10 +1,4 @@
-const {
-	SlashCommandBuilder,
-	EmbedBuilder,
-	ButtonBuilder,
-	ActionRowBuilder,
-	ButtonStyle,
-} = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, PermissionFlagsBits } = require("discord.js");
 const config = require("../../config.json");
 
 module.exports = {
@@ -13,12 +7,19 @@ module.exports = {
 		.setDescription("About ThresherShark"),
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
+		const perms = PermissionFlagsBits.UseExternalEmojis | PermissionFlagsBits.AttachFiles;
 		const row = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
-				.setLabel("Invite to your server!")
+				.setLabel("Invite to your server")
 				.setStyle(ButtonStyle.Link)
 				.setURL(
-					`https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID || 0}&permissions=0&scope=applications.commands+bot`,
+					`https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID || 0}&permissions=${perms}&scope=applications.commands+bot&integration_type=0`
+				),
+			new ButtonBuilder()
+				.setLabel("Add to your apps")
+				.setStyle(ButtonStyle.Link)
+				.setURL(
+					`https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID || 0}&scope=applications.commands&integration_type=1`
 				),
 		);
 		await interaction.reply({
