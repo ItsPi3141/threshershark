@@ -139,10 +139,8 @@ process.on("multipleResolves", (type, promise, reason) => {
 	console.log(type, promise, reason);
 });
 
-process.stdin.resume();
 const exitHandler = (code) => {
 	console.log("Exit code", code);
 	process.exit();
 };
-process.on("exit", exitHandler);
 process.on("SIGTERM", exitHandler);
