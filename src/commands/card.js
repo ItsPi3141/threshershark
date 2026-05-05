@@ -100,8 +100,8 @@ module.exports = {
 
 				const profileUrl =
 					interaction.options.getString("mode") === "username"
-						? `https://api.deeeep.io/users/u/${interaction.options.getString("user")}?ref=profile`
-						: `https://api.deeeep.io/users/${interaction.options.getString("user")}?ref=profile`;
+						? `https://${process.env.API_DOMAIN}/users/u/${interaction.options.getString("user")}?ref=profile`
+						: `https://${process.env.API_DOMAIN}/users/${interaction.options.getString("user")}?ref=profile`;
 				profileData = await getPage(profileUrl);
 				if (profileData === null) {
 					throw new Error("Cloudflare error!");
@@ -116,7 +116,7 @@ module.exports = {
 					);
 				}
 
-				const statsUrl = `https://api.deeeep.io/userStats/${profileData.id}`;
+				const statsUrl = `https://${process.env.API_DOMAIN}/userStats/${profileData.id}`;
 				statsData = await getPage(statsUrl);
 				if (statsData === null) {
 					throw new Error("Cloudflare error!");
@@ -131,13 +131,13 @@ module.exports = {
 
 				await interaction.reply(`${config.emojis.loading} Fetching data...`);
 
-				const profileUrl = `https://api.deeeep.io/users/${id}?ref=profile`;
+				const profileUrl = `https://${process.env.API_DOMAIN}/users/${id}?ref=profile`;
 				profileData = await getPage(profileUrl);
 				if (profileData === null) {
 					throw new Error("Cloudflare error!");
 				}
 
-				const statsUrl = `https://api.deeeep.io/userStats/${profileData.id}`;
+				const statsUrl = `https://${process.env.API_DOMAIN}/userStats/${profileData.id}`;
 				statsData = await getPage(statsUrl);
 				if (statsData === null) {
 					throw new Error("Cloudflare error!");

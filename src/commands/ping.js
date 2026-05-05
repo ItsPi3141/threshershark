@@ -15,10 +15,10 @@ module.exports = {
 		const t2_discord = Date.now();
 
 		const t1_api = Date.now();
-		await getPage("https://api.deeeep.io/");
+		await getPage(`https://${process.env.API_DOMAIN}/`);
 		const t2_api = Date.now();
 		const t1_db = Date.now();
-		await getPage("https://api.deeeep.io/users/0");
+		await getPage(`https://${process.env.API_DOMAIN}/users/0`);
 		const t2_db = Date.now();
 
 		interaction.editReply(

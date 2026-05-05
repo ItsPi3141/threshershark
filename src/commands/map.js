@@ -48,8 +48,8 @@ module.exports = {
 
 		const mapUrl =
 			interaction.options.getString("mode") === "sid"
-				? `https://api.deeeep.io/maps/s/${interaction.options.getString("map")}`
-				: `https://api.deeeep.io/maps/${interaction.options.getString("map")}`;
+				? `https://${process.env.API_DOMAIN}/maps/s/${interaction.options.getString("map")}`
+				: `https://${process.env.API_DOMAIN}/maps/${interaction.options.getString("map")}`;
 		const mapData = await getPage(mapUrl);
 		if (mapData === null) {
 			throw new Error("Cloudflare error!");

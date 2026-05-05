@@ -20,7 +20,7 @@ module.exports = {
 			content: `${config.emojis.loading} Finding your account...`,
 		});
 
-		const profileUrl = `https://api.deeeep.io/users/u/${interaction.options.getString("username")}?ref=profile`;
+		const profileUrl = `https://${process.env.API_DOMAIN}/users/u/${interaction.options.getString("username")}?ref=profile`;
 		const profileData = await getPage(profileUrl);
 		if (profileData === null) {
 			throw new Error("Cloudflare error!");
@@ -32,7 +32,7 @@ module.exports = {
 			return;
 		}
 
-		const socialLinksUrl = `https://api.deeeep.io/socialNetworks/u/${profileData.id}`;
+		const socialLinksUrl = `https://${process.env.API_DOMAIN}/socialNetworks/u/${profileData.id}`;
 		const socialLinksData = await getPage(socialLinksUrl);
 		if (socialLinksData === null) {
 			throw new Error("Cloudflare error!");

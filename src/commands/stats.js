@@ -30,19 +30,19 @@ module.exports = {
 			content: `${config.emojis.loading} Fetching data...`,
 		});
 
-		const profileUrl = `https://api.deeeep.io/users/${id}?ref=profile`;
+		const profileUrl = `https://${process.env.API_DOMAIN}/users/${id}?ref=profile`;
 		const profileData = await getPage(profileUrl);
 		if (profileData === null) {
 			throw new Error("Cloudflare error!");
 		}
 
-		const statsUrl = `https://api.deeeep.io/userStats/${profileData.id}`;
+		const statsUrl = `https://${process.env.API_DOMAIN}/userStats/${profileData.id}`;
 		const statsData = await getPage(statsUrl);
 		if (statsData === null) {
 			throw new Error("Cloudflare error!");
 		}
 
-		const socialNetworksUrl = `https://api.deeeep.io/socialNetworks/u/${profileData.id}`;
+		const socialNetworksUrl = `https://${process.env.API_DOMAIN}/socialNetworks/u/${profileData.id}`;
 		const socialNetworksData = await getPage(socialNetworksUrl);
 		if (socialNetworksData === null) {
 			throw new Error("Cloudflare error!");

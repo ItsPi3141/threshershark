@@ -23,7 +23,7 @@ module.exports = {
 
 		await interaction.reply(`${config.emojis.loading} Fetching data...`);
 
-		const skinUrl = `https://api.deeeep.io/skins/${interaction.options.getNumber("id")}${
+		const skinUrl = `https://${process.env.API_DOMAIN}/skins/${interaction.options.getNumber("id")}${
 			interaction.options.getNumber("version")
 				? `/${interaction.options.getNumber("version")}`
 				: ""
