@@ -32,7 +32,7 @@ for (const file of commandFiles) {
 		client.commands.set(command.data.name, command);
 	} else {
 		console.log(
-			`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+			`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
 		);
 	}
 }
@@ -49,7 +49,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		const command = interaction.client.commands.get(interaction.commandName);
 		if (!command) {
 			console.error(
-				`No command matching ${interaction.commandName} was found.`,
+				`No command matching ${interaction.commandName} was found.`
 			);
 			return;
 		}
@@ -93,7 +93,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			commands.push(jsonCommand);
 		} else {
 			console.log(
-				`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+				`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
 			);
 		}
 	}
@@ -104,14 +104,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	(async () => {
 		try {
 			console.log(
-				`Started refreshing ${commands.length} application (/) commands.`,
+				`Started refreshing ${commands.length} application (/) commands.`
 			);
 			const data = await rest.put(
 				Routes.applicationCommands(process.env.CLIENT_ID),
-				{ body: commands },
+				{ body: commands }
 			);
 			console.log(
-				`Successfully reloaded ${data.length} application (/) commands.`,
+				`Successfully reloaded ${data.length} application (/) commands.`
 			);
 		} catch (error) {
 			console.error(error);

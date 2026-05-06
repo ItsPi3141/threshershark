@@ -25,7 +25,7 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 	let isApng = false;
 	if (hasPfp) {
 		const a2g = await apng2gif(
-			`https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`,
+			`https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
 		);
 		if (a2g === null) {
 			isApng = false;
@@ -40,14 +40,14 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 		attachments.push(
 			new AttachmentBuilder(gifData, {
 				name: "pfp.gif",
-			}),
+			})
 		);
 	}
 
 	const embed = new EmbedBuilder()
 		.setURL(`https://deeeep.io/u/${profileData.username}`)
 		.setTitle(
-			`${profileData.username} ${profileData.verified ? config.emojis.verified : ""}`,
+			`${profileData.username} ${profileData.verified ? config.emojis.verified : ""}`
 		)
 		.setDescription(profileData.about?.toString() || "*No description*")
 		.addFields(
@@ -115,7 +115,7 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 				name: "Death message",
 				value: profileData.description?.toString() || "*No death message*",
 				inline: false,
-			},
+			}
 		)
 		.setFooter({
 			text: `ID: ${profileData.id}`,
@@ -125,7 +125,7 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 				? isApng
 					? "attachment://pfp.gif"
 					: `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
-				: "https://deeeep.io/img/avatar.png",
+				: "https://deeeep.io/img/avatar.png"
 		)
 		.setTimestamp();
 
