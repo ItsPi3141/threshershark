@@ -8,12 +8,14 @@ const {
 	ActivityType,
 	Events,
 	PresenceUpdateStatus,
+	GatewayIntentBits,
+	Partials,
 } = require("discord.js");
 const config = require("../config.json");
 
 const client = new Client({
-	intents: [],
-	partials: [],
+	intents: [GatewayIntentBits.DirectMessages, GatewayIntentBits.Guilds],
+	partials: [Partials.Reaction, Partials.User],
 });
 
 require("./server.js");
