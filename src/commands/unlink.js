@@ -11,7 +11,7 @@ module.exports = {
 
 		await disconnectAccount(interaction.user.id);
 		return await interaction.reply(
-			`${config.emojis.true} Your account has now been unlinked!`,
+			`${config.emojis.true} Your account has now been unlinked!`
 		);
 	},
 };

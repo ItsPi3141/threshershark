@@ -12,13 +12,13 @@ module.exports = {
 			option
 				.setName("user")
 				.setDescription("Display someone else's profile")
-				.setRequired(false),
+				.setRequired(false)
 		),
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
 
 		const id = await getConnectedAccount(
-			interaction.options.getUser("user")?.id || interaction.user.id,
+			interaction.options.getUser("user")?.id || interaction.user.id
 		);
 		if (!id) {
 			return await interaction.reply({
@@ -51,7 +51,7 @@ module.exports = {
 		const embedData = await userProfileEmbed(
 			profileData,
 			statsData,
-			socialNetworksData,
+			socialNetworksData
 		);
 		await interaction.editReply({
 			content: "",

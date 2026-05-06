@@ -1,4 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, PermissionFlagsBits } = require("discord.js");
+const {
+	SlashCommandBuilder,
+	EmbedBuilder,
+	ButtonBuilder,
+	ActionRowBuilder,
+	ButtonStyle,
+	PermissionFlagsBits,
+} = require("discord.js");
 const config = require("../../config.json");
 
 module.exports = {
@@ -7,7 +14,8 @@ module.exports = {
 		.setDescription("About ThresherShark"),
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
-		const perms = PermissionFlagsBits.UseExternalEmojis | PermissionFlagsBits.AttachFiles;
+		const perms =
+			PermissionFlagsBits.UseExternalEmojis | PermissionFlagsBits.AttachFiles;
 		const row = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
 				.setLabel("Invite to your server")
@@ -20,7 +28,7 @@ module.exports = {
 				.setStyle(ButtonStyle.Link)
 				.setURL(
 					`https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID || 0}&scope=applications.commands&integration_type=1`
-				),
+				)
 		);
 		await interaction.reply({
 			embeds: [

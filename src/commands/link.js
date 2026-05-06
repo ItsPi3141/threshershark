@@ -11,7 +11,7 @@ module.exports = {
 			option
 				.setName("username")
 				.setDescription("Your Deeeep.io username")
-				.setRequired(true),
+				.setRequired(true)
 		),
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
@@ -27,7 +27,7 @@ module.exports = {
 		}
 		if (!profileData.id) {
 			await interaction.editReply(
-				`${config.emojis.false} Failed to link your account! Make sure you have inputted a valid username.`,
+				`${config.emojis.false} Failed to link your account! Make sure you have inputted a valid username.`
 			);
 			return;
 		}
@@ -51,14 +51,14 @@ module.exports = {
 
 		if (!isValid) {
 			await interaction.editReply(
-				`${config.emojis.false} Failed to link your account! Make sure your Discord username is added as a social link on your Deeeep.io profile.`,
+				`${config.emojis.false} Failed to link your account! Make sure your Discord username is added as a social link on your Deeeep.io profile.`
 			);
 			return;
 		}
 
 		await connectAccount(interaction.user.id, profileData.id);
 		return await interaction.editReply(
-			`${config.emojis.true} You're now linked to ${profileData.username}!`,
+			`${config.emojis.true} You're now linked to ${profileData.username}!`
 		);
 	},
 };

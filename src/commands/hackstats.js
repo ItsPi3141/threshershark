@@ -20,14 +20,14 @@ module.exports = {
 					{
 						name: "User ID",
 						value: "userid",
-					},
-				),
+					}
+				)
 		)
 		.addStringOption((option) =>
 			option
 				.setName("user")
 				.setDescription("The user to display")
-				.setRequired(true),
+				.setRequired(true)
 		),
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
@@ -46,7 +46,7 @@ module.exports = {
 		}
 		if (!profileData.id) {
 			return await interaction.editReply(
-				`${config.emojis.false} Account not found! Make sure you have inputted a valid ${interaction.options.getString("mode") === "username" ? "username" : "user ID"}.`,
+				`${config.emojis.false} Account not found! Make sure you have inputted a valid ${interaction.options.getString("mode") === "username" ? "username" : "user ID"}.`
 			);
 		}
 
@@ -65,7 +65,7 @@ module.exports = {
 		const embedData = await userProfileEmbed(
 			profileData,
 			statsData,
-			socialNetworksData,
+			socialNetworksData
 		);
 		await interaction.editReply({
 			content: "",

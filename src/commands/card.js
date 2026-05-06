@@ -25,14 +25,14 @@ module.exports = {
 							{
 								name: "User ID",
 								value: "userid",
-							},
-						),
+							}
+						)
 				)
 				.addStringOption((option) =>
 					option
 						.setName("user")
 						.setDescription("The user to display")
-						.setRequired(false),
+						.setRequired(false)
 				)
 				.addStringOption((option) =>
 					option
@@ -68,12 +68,12 @@ module.exports = {
 								name: "Ground",
 								value: "terrain",
 							},
-						]),
-				),
+						])
+				)
 		),
 	async execute(
 		/** @type {import("discord.js").Interaction} */ interaction,
-		/** @type {import("discord.js").Client} */ client,
+		/** @type {import("discord.js").Client} */ client
 	) {
 		const subcommand = interaction.options.getSubcommand();
 
@@ -87,12 +87,12 @@ module.exports = {
 			) {
 				if (!interaction.options.getString("user")) {
 					return await interaction.reply(
-						`${config.emojis.false} You must specify a user to search for!`,
+						`${config.emojis.false} You must specify a user to search for!`
 					);
 				}
 				if (!interaction.options.getString("mode")) {
 					return await interaction.reply(
-						`${config.emojis.false} You must specify a search mode!`,
+						`${config.emojis.false} You must specify a search mode!`
 					);
 				}
 
@@ -112,7 +112,7 @@ module.exports = {
 							interaction.options.getString("mode") === "username"
 								? "username"
 								: "user ID"
-						}.`,
+						}.`
 					);
 				}
 
@@ -144,13 +144,13 @@ module.exports = {
 				}
 			}
 			await interaction.editReply(
-				`${config.emojis.loading} Generating card...`,
+				`${config.emojis.loading} Generating card...`
 			);
 
 			const card = await createProfileCard(
 				profileData,
 				statsData,
-				interaction.options.getString("theme") || "classic",
+				interaction.options.getString("theme") || "classic"
 			);
 			return await interaction.editReply({
 				content: "",

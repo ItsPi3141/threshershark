@@ -24,20 +24,20 @@ module.exports = {
 					{
 						name: "String ID",
 						value: "sid",
-					},
-				),
+					}
+				)
 		)
 		.addStringOption((option) =>
 			option
 				.setName("map")
 				.setDescription("The map to display")
-				.setRequired(true),
+				.setRequired(true)
 		)
 		.addBooleanOption((option) =>
 			option
 				.setName("hide_preview")
 				.setDescription("Disable the map preview")
-				.setRequired(false),
+				.setRequired(false)
 		),
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
@@ -56,7 +56,7 @@ module.exports = {
 		}
 		if (!mapData.id) {
 			return await interaction.editReply(
-				`${config.emojis.false} Map not found! Make sure you have inputted a valid ID.`,
+				`${config.emojis.false} Map not found! Make sure you have inputted a valid ID.`
 			);
 		}
 
@@ -120,7 +120,7 @@ module.exports = {
 					.slice(1)
 					.map((e, i) => (i === 0 ? e.toUpperCase() : e))
 					.join(
-						"",
+						""
 					)}**: ${value.count} ${value.count === 1 ? "object" : "objects"} (${value.subcount} ${
 					layer === "food-spawns"
 						? value.subcount === 1
@@ -155,7 +155,7 @@ module.exports = {
 				{
 					name: "Dimensions",
 					value: `${numberWithCommas(Number.parseFloat(mapObjectData.worldSize.width))} x ${numberWithCommas(
-						Number.parseFloat(mapObjectData.worldSize.height),
+						Number.parseFloat(mapObjectData.worldSize.height)
 					)}`,
 					inline: true,
 				},
@@ -186,7 +186,7 @@ module.exports = {
 					value:
 						mapData.tags.map((t) => `\`${t.id}\``).join(", ") || "*No tags*",
 					inline: false,
-				},
+				}
 			)
 			.setFooter({
 				text: `String ID: ${mapData.string_id} • Numerical ID: ${mapData.id}`,
@@ -200,10 +200,10 @@ module.exports = {
 		}
 
 		await interaction.editReply(
-			`${config.emojis.loading} Generating map preview...\n-# #${previewQueue.length + 1} in queue`,
+			`${config.emojis.loading} Generating map preview...\n-# #${previewQueue.length + 1} in queue`
 		);
 		const mapPreviewImg = await previewQueue.enqueue(() =>
-			createMapPreview(mapObjectData),
+			createMapPreview(mapObjectData)
 		);
 		const mapPreviewAttachment = new AttachmentBuilder(mapPreviewImg, {
 			name: "map.png",

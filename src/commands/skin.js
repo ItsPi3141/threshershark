@@ -10,13 +10,13 @@ module.exports = {
 		.setName("skin")
 		.setDescription("Get info about a Deeeep.io skin")
 		.addNumberOption((option) =>
-			option.setName("id").setDescription("ID of the skin").setRequired(true),
+			option.setName("id").setDescription("ID of the skin").setRequired(true)
 		)
 		.addNumberOption((option) =>
 			option
 				.setName("version")
 				.setDescription("Version of the skin")
-				.setRequired(false),
+				.setRequired(false)
 		),
 	async execute(/** @type {import("discord.js").Interaction} */ interaction) {
 		await interaction.client.application.fetch();
@@ -34,7 +34,7 @@ module.exports = {
 		}
 		if (!skinData.id) {
 			return await interaction.editReply(
-				`${config.emojis.false} Skin not found! Make sure you have inputted a valid ID.`,
+				`${config.emojis.false} Skin not found! Make sure you have inputted a valid ID.`
 			);
 		}
 
@@ -43,7 +43,7 @@ module.exports = {
 		if (skinData.assets_data !== null) {
 			for (sprite of Object.values(skinData.assets_data)) {
 				additionalAssets.push(
-					`https://cdn.deeeep.io/custom/skins/${sprite.asset}?v=${skinData.version}`,
+					`https://cdn.deeeep.io/custom/skins/${sprite.asset}?v=${skinData.version}`
 				);
 			}
 		}
@@ -58,7 +58,7 @@ module.exports = {
 							: undefined,
 					})
 					.setTitle(
-						`${skinData.name} \`v${numberWithCommas(skinData.version)}\``,
+						`${skinData.name} \`v${numberWithCommas(skinData.version)}\``
 					)
 					.setDescription(skinData.description || "*No description*")
 					.addFields(
@@ -110,7 +110,7 @@ module.exports = {
 								`Rejected: ${skinData.rejected ? config.emojis.true : config.emojis.false}`,
 							].join("\n"),
 							inline: false,
-						},
+						}
 					)
 					.setImage(asset)
 					.setFooter({
@@ -120,7 +120,7 @@ module.exports = {
 				...additionalAssets.map((asset) =>
 					new EmbedBuilder()
 						.setURL(`https://deeeep.io/store/skins/${skinData.id}`)
-						.setImage(asset),
+						.setImage(asset)
 				),
 			],
 		});

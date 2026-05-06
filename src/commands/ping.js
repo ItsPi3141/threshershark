@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription("Display the bot's latency"),
 	async execute(
 		/** @type {import("discord.js").Interaction} */ interaction,
-		/** @type {import("discord.js").Client} */ client,
+		/** @type {import("discord.js").Client} */ client
 	) {
 		const t1_discord = Date.now();
 		await interaction.reply(`${config.emojis.loading} Calculating ping...`);
@@ -26,7 +26,7 @@ module.exports = {
 				`Discord: \`${Math.round(t2_discord - t1_discord)}ms\``,
 				`Deeeep.io (static data): \`${Math.round(t2_api - t1_api)}ms\``,
 				`Deeeep.io (database query): \`${Math.round(t2_db - t1_db)}ms\``,
-			].join("\n"),
+			].join("\n")
 		);
 	},
 };

@@ -7,7 +7,7 @@ const { toStaticPng, bufferToB64 } = require("../tools/img");
 
 const TextToSVG = require("text-to-svg");
 const quicksandRegular = TextToSVG.loadSync(
-	"./src/cardRenderer/Quicksand400.ttf",
+	"./src/cardRenderer/Quicksand400.ttf"
 );
 const quicksandBold = TextToSVG.loadSync("./src/cardRenderer/Quicksand700.ttf");
 
@@ -65,7 +65,7 @@ async function createProfileCard(profileData, statsData, theme) {
 
 	let svg = fs.readFileSync(
 		path.join(__dirname, "profile", "profile.svg"),
-		"utf8",
+		"utf8"
 	);
 	const content = {
 		background: hasBgImage
@@ -80,9 +80,9 @@ async function createProfileCard(profileData, statsData, theme) {
 				await getImageBuffer(
 					profileData.picture !== null
 						? `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
-						: "https://deeeep.io/img/avatar.png",
-				),
-			),
+						: "https://deeeep.io/img/avatar.png"
+				)
+			)
 		),
 
 		text_coinCount: `<path d="${svgText(`${numberWithCommas(profileData.coins)} coins`, 112, 215, 20, true)}" fill="#f0c423" />`,
@@ -111,7 +111,7 @@ async function createProfileCard(profileData, statsData, theme) {
 			).toFixed(2),
 			785,
 			110,
-			20,
+			20
 		)}" fill="#fff" />`,
 
 		text_pd: `<path d="${svgText("PD", 785, 200, 24, true)}" fill="#fff" />`,
@@ -121,14 +121,14 @@ async function createProfileCard(profileData, statsData, theme) {
 				: "No data",
 			785,
 			228,
-			20,
+			20
 		)}" fill="#fff" />`,
 		text_pdPercent: hasPd
 			? `<path d="${svgText(
 					`(${statsData.pd.ratio}%)`,
 					785,
 					250,
-					18,
+					18
 				)}" fill="#fff" />`
 			: "",
 
@@ -141,9 +141,9 @@ async function createProfileCard(profileData, statsData, theme) {
 				: Math.min(
 						(profileData.xp - tierXpReq[profileData.tier]) /
 							(tierXpReq[profileData.tier + 1] - tierXpReq[profileData.tier]),
-						1,
+						1
 					)) * 420,
-			10,
+			10
 		),
 	};
 	for (const key in content) {
