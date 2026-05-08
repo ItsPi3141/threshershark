@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
-const { createProfileCard } = require("../cardRenderer/cardRenderer.js");
+// const { createProfileCard } = require("../cardRenderer/cardRenderer.js");
 const { getConnectedAccount } = require("../tools/mongo.js");
 const { getPage } = require("../tools/fetch.js");
 const config = require("../../config.json");
@@ -147,6 +147,7 @@ module.exports = {
 				`${config.emojis.loading} Generating card...`
 			);
 
+			const { createProfileCard } = require("../cardRenderer/cardRenderer.js");
 			const card = await createProfileCard(
 				profileData,
 				statsData,

@@ -81,9 +81,15 @@ async function userProfileEmbed(profileData, statsData, socialNetworksData) {
 				value:
 					statsData.pd === null
 						? "*No data*"
-						: `${numberWithCommas(statsData.pd.played)} played, ${numberWithCommas(statsData.pd.won)} won; win ratio: ${
-								statsData.pd.ratio
-							}%`,
+						: `${numberWithCommas(statsData.pd.played)} played, ${numberWithCommas(statsData.pd.won)} won (${statsData.pd.ratio}% win ratio)`,
+				inline: false,
+			},
+			{
+				name: "Toxic algae",
+				value:
+					statsData.ta === null
+						? "*No data*"
+						: `${numberWithCommas(statsData.ta.played)} played; ${numberWithCommas(statsData.ta.gold)} gold, ${numberWithCommas(statsData.ta.silver)} silver, ${numberWithCommas(statsData.ta.bronze)} bronze`,
 				inline: false,
 			},
 			{

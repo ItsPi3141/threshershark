@@ -103,31 +103,47 @@ async function createProfileCard(profileData, statsData, theme) {
 		text_playCountNumber: `<path d="${svgText(numberWithCommas(profileData.play_count), 565, 150, 20)}" fill="#fff" />`,
 		text_playCountRank: `<path d="${svgText(`(#${numberWithCommas(statsData.rank_pc)})`, 565, 175, 18)}" fill="#fff" />`,
 
-		text_kdRatio: `<path d="${svgText("K/D Ratio", 785, 80, 24, true)}" fill="#fff" />`,
+		text_kdRatio: `<path d="${svgText("K/D Ratio", 780, 52, 24, true)}" fill="#fff" />`,
 		text_kdRatioValue: `<path d="${svgText(
 			(profileData.play_count === 0
 				? profileData.kill_count
 				: profileData.kill_count / profileData.play_count
 			).toFixed(2),
-			785,
-			110,
+			780,
+			78,
 			20
 		)}" fill="#fff" />`,
 
-		text_pd: `<path d="${svgText("PD", 785, 200, 24, true)}" fill="#fff" />`,
+		text_pd: `<path d="${svgText("Pearl defense", 780, 128 + (hasPd ? 0 : 10), 22, true)}" fill="#fff" />`,
 		text_pdWonPlayed: `<path d="${svgText(
 			hasPd
 				? `${numberWithCommas(statsData.pd.won)}/${numberWithCommas(statsData.pd.played)} won`
 				: "No data",
-			785,
-			228,
+			780,
+			152 + (hasPd ? 0 : 10),
 			20
 		)}" fill="#fff" />`,
 		text_pdPercent: hasPd
 			? `<path d="${svgText(
 					`(${statsData.pd.ratio}%)`,
-					785,
-					250,
+					780,
+					174,
+					18
+				)}" fill="#fff" />`
+			: "",
+
+		text_ta: `<path d="${svgText("Toxic algae", 780, 222 + (hasPd ? 0 : 10), 22, true)}" fill="#fff" />`,
+		text_taPlayed: `<path d="${svgText(
+			hasPd ? `${numberWithCommas(statsData.ta.played)} played` : "No data",
+			780,
+			246 + (hasPd ? 0 : 10),
+			20
+		)}" fill="#fff" />`,
+		text_taResults: hasPd
+			? `<path d="${svgText(
+					`${numberWithCommas(statsData.ta.gold)} / ${numberWithCommas(statsData.ta.silver)} / ${numberWithCommas(statsData.ta.bronze)}`,
+					780,
+					268,
 					18
 				)}" fill="#fff" />`
 			: "",
