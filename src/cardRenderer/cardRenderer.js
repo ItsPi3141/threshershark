@@ -103,14 +103,14 @@ async function createProfileCard(profileData, statsData, theme) {
 		text_playCountNumber: `<path d="${svgText(numberWithCommas(profileData.play_count), 565, 150, 20)}" fill="#fff" />`,
 		text_playCountRank: `<path d="${svgText(`(#${numberWithCommas(statsData.rank_pc)})`, 565, 175, 18)}" fill="#fff" />`,
 
-		text_kdRatio: `<path d="${svgText("K/D Ratio", 780, 52, 24, true)}" fill="#fff" />`,
+		text_kdRatio: `<path d="${svgText("K/D Ratio", 780, 53, 22, true)}" fill="#fff" />`,
 		text_kdRatioValue: `<path d="${svgText(
 			(profileData.play_count === 0
 				? profileData.kill_count
 				: profileData.kill_count / profileData.play_count
 			).toFixed(2),
 			780,
-			78,
+			77,
 			20
 		)}" fill="#fff" />`,
 
