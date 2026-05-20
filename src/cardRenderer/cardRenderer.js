@@ -75,15 +75,18 @@ async function createProfileCard(profileData, statsData, theme) {
 		surfaceColor: hasBgImage ? "#0006" : "#1f2937",
 		surfaceAltColor: hasBgImage ? "#0003" : "#19212c",
 
-		profilePicture: await bufferToB64(
-			await toStaticPng(
-				await getImageBuffer(
-					profileData.picture !== null
-						? `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
-						: "https://deeeep.io/img/avatar.png"
-				).catch(() => getImageBuffer("https://deeeep.io/img/avatar.png"))
-			)
-		),
+		profilePicture: await getImageBuffer(
+			profileData.picture !== null
+				? `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
+				: "https://deeeep.io/img/avatar.png"
+		)
+			.then(toStaticPng)
+			.then(bufferToB64)
+			.catch(() =>
+				getImageBuffer("https://deeeep.io/img/avatar.png")
+					.then(toStaticPng)
+					.then(bufferToB64)
+			),
 
 		text_coinCount: `<path d="${svgText(`${numberWithCommas(profileData.coins)} coins`, 112, 215, 20, true)}" fill="#f0c423" />`,
 
