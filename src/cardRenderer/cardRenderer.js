@@ -81,7 +81,7 @@ async function createProfileCard(profileData, statsData, theme) {
 					profileData.picture !== null
 						? `https://cdn.deeeep.io/uploads/avatars/${profileData.picture}`
 						: "https://deeeep.io/img/avatar.png"
-				).catch(() => await getImageBuffer("https://deeeep.io/img/avatar.png"))
+				).catch(() => getImageBuffer("https://deeeep.io/img/avatar.png"))
 			)
 		),
 
