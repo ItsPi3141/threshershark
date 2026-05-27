@@ -174,4 +174,5 @@ async function createProfileCard(profileData, statsData, theme) {
 
 module.exports = {
 	createProfileCard,
+	createSkinCard,
 };

@@ -70,6 +70,17 @@ module.exports = {
 							},
 						])
 				)
+		)
+		.addSubcommand((subcommand) =>
+			subcommand
+				.setName("skin")
+				.setDescription("Create a card for a Deeeep.io skin")
+				.addNumberOption((option) =>
+					option
+						.setName("id")
+						.setDescription("The ID of the skin")
+						.setRequired(true)
+				)
 		),
 	async execute(
 		/** @type {import("discord.js").Interaction} */ interaction,
@@ -153,6 +164,37 @@ module.exports = {
 				statsData,
 				interaction.options.getString("theme") || "classic"
 			);
+			return await interaction.editReply({
+				content: "",
+				files: [
+					new AttachmentBuilder(card, {
+						name: "card.png",
+					}),
+				],
+			});
+		}
+
+		if (subcommand === "skin") {
+			const skinUrl = `https://api.deeeep.io/skins/${interaction.options.getNumber("id")}${
+				interaction.options.getNumber("version")
+					? `/${interaction.options.getNumber("version")}`
+					: ""
+			}`;
+			const skinData = await getPage(skinUrl);
+			if (skinData === null) {
+				throw new Error("Cloudflare error!");
+			}
+			if (!skinData.id) {
+				return await interaction.reply(
+					"⚠️ Skin not found! Make sure you have inputted a valid ID."
+				);
+			}
+
+			await interaction.reply(`${config.emojis.loading} Generating card...`);
+
+			const { createProfileCard } = require("../cardRenderer/cardRenderer.js");
+			const card = await createSkinCard(skinData);
+
 			return await interaction.editReply({
 				content: "",
 				files: [
