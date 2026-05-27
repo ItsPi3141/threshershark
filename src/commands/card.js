@@ -192,7 +192,7 @@ module.exports = {
 
 			await interaction.reply(`${config.emojis.loading} Generating card...`);
 
-			const { createProfileCard } = require("../cardRenderer/cardRenderer.js");
+			const { createSkinCard } = require("../cardRenderer/cardRenderer.js");
 			const card = await createSkinCard(skinData);
 
 			return await interaction.editReply({
