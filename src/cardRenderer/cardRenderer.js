@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { numberWithCommas } = require("../utils");
+const animals = require("../../animals.json");
 const { getImageBuffer } = require("../tools/fetch");
 const sharp = require("sharp");
 const { toStaticPng, bufferToB64 } = require("../tools/img");
