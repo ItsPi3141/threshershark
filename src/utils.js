@@ -15,7 +15,7 @@ const socialNetworks = {
 	tw: "https://x.com/",
 	wb: "https://weibo.com/",
 	fb: true,
-	in: true,
+	li: true,
 	st: true,
 	vk: true,
 	yt: true,
